@@ -1,0 +1,21 @@
+{
+  "dependencies": {
+    "@slack/client": "^3.13.0",
+    "js-yaml": "^3.10.0",
+    "qr-image": "^3.2.0",
+    "request": "^2.81.0",
+    "sequelize": "^4.8.3",
+    "sqlite3": "^3.1.11",
+    "thrift": "^0.10.0"
+  },
+  "devDependencies": {
+    "@types/js-yaml": "^3.9.1",
+    "@types/qr-image": "^3.2.0",
+    "@types/request": "^2.0.3",
+    "@types/sequelize": "^4.0.73"
+  },
+  "name": "line2slack-multiuser",
+  "version": "1.0.0",
+  "main": "bin/app.js",
+  "license": "GPL-3.0"
+}

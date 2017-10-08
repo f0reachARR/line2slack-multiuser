@@ -1,0 +1,6 @@
+bin/*
+node_modules/*
+.vscode/*
+yarn.lock
+config.yml
+*.db
