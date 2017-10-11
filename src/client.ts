@@ -124,15 +124,16 @@ export default class {
                 slackMessage.text = msg.text;
                 break;
             case LineTypes.ContentType.STICKER:
-                let fallback = 'Sticker';
+                let text = 'Sticker';
                 if ('STKTXT' in msg.contentMetadata)
-                    fallback = `Sticker: ${msg.contentMetadata.STKTXT}`;
+                    text = `Sticker: ${msg.contentMetadata.STKTXT}`;
                 if ('STKVER' in msg.contentMetadata && 'STKPKGID' in msg.contentMetadata && 'STKID' in msg.contentMetadata) {
                     const STKVER = parseInt(msg.contentMetadata.STKVER, 10);
                     const version = `${Math.floor(STKVER / 1000000)}/${Math.floor(STKVER / 1000)}/${STKVER % 1000}`;
                     const url = `http://stickershop.line-cdn.net/products/${version}/${msg.contentMetadata.STKPKGID}/android/stickers/${msg.contentMetadata.STKID}.png`;
                     slackMessage.attachments.push({
-                        fallback: fallback,
+                        fallback: text,
+                        text,
                         image_url: url
                     });
                 }
