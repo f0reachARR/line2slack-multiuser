@@ -66,6 +66,17 @@ export default class {
         if (msg.user !== Config.slack.user || msg.channel !== this.account.channel) return;
         if (msg.thread_ts) {
             const conversation = await SlackMessage.find({ where: { threadTs: msg.thread_ts } });
+            if (!conversation) return;
+
+            let lineMsg = new LineTypes.Message();
+            lineMsg.contentType = LineTypes.ContentType.NONE;
+            lineMsg.from_ = this.account.mid;
+            lineMsg.to = conversation.mid;
+            lineMsg.toType = this.getMidType(lineMsg.to);
+            lineMsg.text = msg.text;
+            if (lineMsg.toType === LineTypes.MIDType.USER)
+                await this.encryptUserE2ee(lineMsg);
+            await this.normalClient.sendMessage(1, lineMsg);
         }
     }
     private async processOperation(op: LineTypes.Operation) {
@@ -204,6 +215,29 @@ export default class {
             });
     }
 
+    private async encryptUserE2ee(msg: LineTypes.Message) {
+        const selfKeyEntry = await E2eeKey.find({ where: { mid: this.account.mid }, order: [['keyId', 'DESC']] });
+        if (!selfKeyEntry || !selfKeyEntry.privateKey) {
+            return Promise.reject('There is no key to encrypt message');
+        }
+        let receiverKeyEntry = await E2eeKey.find({ where: { mid: msg.to }, order: [['keyId', 'DESC']] });
+        if (!receiverKeyEntry) {
+            const receiverKeyInfo = await this.normalClient.negotiateE2EEPublicKey(msg.to);
+            receiverKeyEntry = await E2eeKey.create({
+                mid: msg.to,
+                publicKey: receiverKeyInfo.publicKey.keyData.toString('base64'),
+                keyId: receiverKeyInfo.publicKey.keyId
+            });
+        }
+        e2ee.encryptMessage(msg, {
+            keyId: selfKeyEntry.keyId,
+            publicKey: new Buffer(selfKeyEntry.publicKey, 'base64'),
+            privateKey: new Buffer(selfKeyEntry.privateKey, 'base64')
+        }, {
+                keyId: receiverKeyEntry.keyId,
+                publicKey: new Buffer(receiverKeyEntry.publicKey, 'base64'),
+            });
+    }
     private async getE2EEKey(mid: string, keyId: number) {
         let keyEntry = await E2eeKey.find({ where: { mid, keyId } });
         if (!keyEntry) {
@@ -239,5 +273,15 @@ export default class {
 
     private getDisplayName(user: UserInstance) {
         return user.customName || user.name;
+    }
+
+    private getMidType(mid: string): LineTypes.MIDType {
+        switch (mid.substr(0, 1)) {
+            case 'u':
+                return LineTypes.MIDType.USER;
+            case 'g':
+                return LineTypes.MIDType.GROUP;
+        }
+        throw new Error();
     }
 }
