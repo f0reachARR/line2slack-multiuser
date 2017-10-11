@@ -137,6 +137,30 @@ export default class {
                     });
                 }
                 break;
+            case LineTypes.ContentType.LOCATION:
+                if (!msg.location) return;
+                let link = '';
+                if (msg.location.latitude && msg.location.longitude)
+                    link = `https://www.google.co.jp/maps?q=${msg.location.latitude},${msg.location.longitude}`;
+                else if (msg.location.address)
+                    link = `https://www.google.co.jp/maps?q=${msg.location.address}`;
+                else
+                    return Promise.reject('Invalid location');
+
+                if (msg.location.address)
+                    link = `<${link}|${msg.location.address}>`;
+
+                let attachment: SlackMessageAttachment = {
+                    fallback: '位置情報',
+                    title: msg.location.title || '位置情報',
+                    pretext: '位置情報が送信されました',
+                    text: link
+                };
+                if (msg.location.phone)
+                    attachment.fields = [{ title: '電話番号', value: msg.location.phone }];
+
+                slackMessage.attachments.push(attachment);
+                break;
             default: // TODO
                 return;
         }
