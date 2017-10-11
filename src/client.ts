@@ -47,7 +47,8 @@ export default class {
             this.cancelPromise = new Promise(resolve => this.cancelFunction = () => resolve());
             let result = await Promise.race([errorPromise, longPollProm, this.cancelPromise]);
             if (result) {
-                await result.reduce((prev, curr) => prev.then(() => this.processOperation(curr)), Promise.resolve());
+                await result.reduce((prev, curr) => prev.then(() => this.processOperation(curr)), Promise.resolve())
+                    .catch(msg => this.catchHandler(typeof msg === 'string' ? msg : 'An error occured'));
             }
             console.log('Poll end', this.account.mid);
         }
