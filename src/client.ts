@@ -189,7 +189,15 @@ export default class {
     }
 
     private async getUserContact(mid: string): Promise<UserInstance> {
-        let contactEntry = await User.find({ where: { selfMid: this.account.mid, mid } });
+        let contactEntry = await User.find({
+            where: {
+                selfMid: this.account.mid,
+                mid,
+                updatedAt: {
+                    [Symbol('gt')]: new Date(Date.now() - 24 * 60 * 60 * 1000)
+                }
+            }
+        });
         if (contactEntry) return contactEntry;
         const contactInfo = await this.normalClient.getContact(mid);
         contactEntry = await User.addContact(this.account.mid, contactInfo);
