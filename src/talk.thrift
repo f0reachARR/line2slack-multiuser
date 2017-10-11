@@ -1,56 +1,31 @@
-# AccountMigrationCheckType.java
 enum AccountMigrationCheckType {
 	SKIP = 0,
 	PINCODE = 1,
 	SECURITY_CENTER = 2,
 }
-# AccountMigrationPincodeType.java
+
 enum AccountMigrationPincodeType {
 	NOT_APPLICABLE = 0,
 	NOT_SET = 1,
 	SET = 2,
 	NEED_ENFORCED_INPUT = 3,
 }
-# AccountSupervisorService.java
-# AccountSupervisorService.java
-# AccountSupervisorService.java
-# AccountSupervisorService.java
-# no success notifyEmailConfirmationResult
-# AccountSupervisorService.java
-# AccountSupervisorService.java
-# AccountSupervisorService.java
-# AccountSupervisorService.java
-# no success requestVirtualAccountPasswordChange
-# AccountSupervisorService.java
-# AccountSupervisorService.java
-# no success requestVirtualAccountPasswordSet
-# AccountSupervisorService.java
-# AccountSupervisorService.java
-# no success unregisterVirtualAccount
-# AgeCheckDocomoResult.java
+
 struct AgeCheckDocomoResult {
 	1: string authUrl;
 	2: UserAgeType userAgeType;
 }
-# AgeCheckRequestResult.java
+
 struct AgeCheckRequestResult {
 	1: string authUrl;
 	2: string sessionId;
 }
-# AgeCheckService.java
-# AgeCheckService.java
-# AgeCheckService.java
-# AgeCheckService.java
-# AgeCheckService.java
-# AgeCheckService.java
-# AgeCheckService.java
-# AgeCheckService.java
-# AnalyticsInfo.java
+
 struct AnalyticsInfo {
 	1: double gaSamplingRate;
 	2: string tmid;
 }
-# Announcement.java
+
 struct Announcement {
 	1: i32 index;
 	10: bool forceUpdate;
@@ -60,7 +35,7 @@ struct Announcement {
 	14: string pictureUrl;
 	15: string thumbnailUrl;
 }
-# ApplicationType.java
+
 enum ApplicationType {
 	IOS = 16,
 	IOS_RC = 17,
@@ -172,71 +147,49 @@ enum ApplicationType {
 	INTERNAL_BETA = 466,
 	INTERNAL_ALPHA = 467,
 }
-# ApprovedChannelInfo.java
+
 struct ApprovedChannelInfo {
 	1: ChannelInfo channelInfo;
 	2: i64 approvedAt;
 }
-# ApprovedChannelInfos.java
+
 struct ApprovedChannelInfos {
 	1: list<ApprovedChannelInfo> approvedChannelInfos;
 	2: i64 revision;
 }
-# AsymmetricKeyAlgorithm.java
+
 enum AsymmetricKeyAlgorithm {
 	ASYMMETRIC_KEY_ALGORITHM_RSA = 1,
 	ASYMMETRIC_KEY_ALGORITHM_ECDH = 2,
 }
-# AuthQrcode.java
+
 struct AuthQrcode {
 	1: string qrcode;
 	2: string verifier;
 	3: string callbackUrl;
 }
-# AuthService.java
-# AuthService.java
-# AuthService.java
-# AuthService.java
-# AuthService.java
-# AuthService.java
-# AuthService.java
-# AuthService.java
-# AuthService.java
-# AuthService.java
-# no success logoutZ
-# AuthService.java
-# AuthService.java
-# AuthService.java
-# AuthService.java
-# no success respondE2EELoginRequest
-# AuthService.java
-# AuthService.java
-# Balance.java
+
 struct Balance {
 	1: string currentPointsFixedPointDecimal;
 }
-# BanPage.java
+
 struct BanPage {
 	1: string url;
 }
-# BanService.java
-# BanService.java
-# BanService.java
-# BanService.java
-# BeaconBackgroundNotification.java
+
 struct BeaconBackgroundNotification {
 	1: i64 actionInterval;
 	2: list<BeaconCondition> actionAndConditions;
 	3: i64 actionDelay;
 	4: list<list<BeaconCondition>> actionConditions;
 }
-# BeaconCondition.java
+
 struct BeaconCondition {
 	1: string inFriends;
 	2: string notInFriends;
 	3: bool termsAgreed;
 }
-# BeaconLayerInfoAndActions.java
+
 struct BeaconLayerInfoAndActions {
 	1: string pictureUrl;
 	2: string label;
@@ -246,14 +199,14 @@ struct BeaconLayerInfoAndActions {
 	6: list<list<BeaconCondition>> showConditions;
 	7: i64 timeToHide;
 }
-# BeaconNotificationType.java
+
 enum BeaconNotificationType {
 	BUTTON = 1,
 	ENTRY_SELECTED = 2,
 	BROADCAST_ENTER = 3,
 	BROADCAST_LEAVE = 4,
 }
-# BeaconQueryResponse.java
+
 struct BeaconQueryResponse {
 	2: list<string> deprecated_actionUrls;
 	3: i64 cacheTtl;
@@ -267,41 +220,25 @@ struct BeaconQueryResponse {
 	11: double effectiveRange;
 	12: list<string> channelWhiteList;
 }
-# BeaconQueryService.java
-# BeaconQueryService.java
-# BeaconService.java
-# BeaconService.java
-# no success notifyBeaconDetected
-# BeaconTouchActions.java
+
 struct BeaconTouchActions {
 	1: list<string> actions;
 }
-# BotService.java
-# BotService.java
-# BotService.java
-# BotService.java
-# no success notifyLeaveGroup
-# BotService.java
-# BotService.java
-# no success notifyLeaveRoom
-# BotService.java
-# BotService.java
-# no success sendChatCheckedByWatermark
-# BotType.java
+
 enum BotType {
 	RESERVED = 0,
 	OFFICIAL = 1,
 	LINE_AT_0 = 2,
 	LINE_AT = 3,
 }
-# BotUseInfo.java
+
 struct BotUseInfo {
 	1: bool botUseAgreementAccepted;
 	2: bool botInFriends;
 	3: string primaryApplication;
 	4: string locale;
 }
-# BuddyBanner.java
+
 struct BuddyBanner {
 	1: BuddyBannerLinkType buddyBannerLinkType;
 	2: string buddyBannerLink;
@@ -310,33 +247,33 @@ struct BuddyBanner {
 	5: i32 height;
 	6: i64 bannerId;
 }
-# BuddyBannerLinkType.java
+
 enum BuddyBannerLinkType {
 	BUDDY_BANNER_LINK_HIDDEN = 0,
 	BUDDY_BANNER_LINK_MID = 1,
 	BUDDY_BANNER_LINK_URL = 2,
 }
-# BuddyCategoryEntry.java
+
 struct BuddyCategoryEntry {
 	1: string classification;
 	2: string displayName;
 	3: i32 totalBuddyCount;
 }
-# BuddyCategoryView.java
+
 struct BuddyCategoryView {
 	1: list<BuddyCategoryEntry> categoryEntries;
 }
-# BuddyChatBar.java
+
 struct BuddyChatBar {
 	1: list<BuddyChatBarItem> barItems;
 }
-# BuddyChatBarItem.java
+
 struct BuddyChatBarItem {
 	1: BuddyRichMenuChatBarItem rich;
 	2: BuddyWidgetListCharBarItem widgetList;
 	3: BuddyWebChatBarItem web;
 }
-# BuddyCollection.java
+
 struct BuddyCollection {
 	1: i32 code;
 	2: string displayName;
@@ -345,20 +282,20 @@ struct BuddyCollection {
 	5: bool horizontal;
 	6: BuddyCollectionType type;
 }
-# BuddyCollectionEntry.java
+
 struct BuddyCollectionEntry {
 	1: Contact contact;
 	2: bool onAir;
 	3: bool asNew;
 }
-# BuddyCollectionType.java
+
 enum BuddyCollectionType {
 	NORMAL = 0,
 	NEW = 1,
 	ONAIR = 2,
 	POPULAR = 3,
 }
-# BuddyDetail.java
+
 struct BuddyDetail {
 	1: string mid;
 	2: i64 memberCount;
@@ -387,204 +324,14 @@ struct BuddyDetail {
 	25: i64 statusBarRevision;
 	26: bool capableChat;
 }
-# BuddyList.java
+
 struct BuddyList {
 	1: string classification;
 	2: string displayName;
 	3: i32 totalBuddyCount;
 	4: list<Contact> popularContacts;
 }
-# BuddyManagementService.java
-# BuddyManagementService.java
-# no success addBuddyMember
-# BuddyManagementService.java
-# BuddyManagementService.java
-# no success addBuddyMembers
-# BuddyManagementService.java
-# BuddyManagementService.java
-# no success blockBuddyMember
-# BuddyManagementService.java
-# BuddyManagementService.java
-# no success commitPrivateMessages
-# BuddyManagementService.java
-# BuddyManagementService.java
-# no success commitPublicMessagesToAll
-# BuddyManagementService.java
-# BuddyManagementService.java
-# no success commitPublicMessagesToMids
-# BuddyManagementService.java
-# BuddyManagementService.java
-# no success commitPublicMessagesToStoredMids
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# no success deleteBotProfileImage
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# no success notifyBuddyBlocked
-# BuddyManagementService.java
-# BuddyManagementService.java
-# no success notifyBuddyRegistered
-# BuddyManagementService.java
-# BuddyManagementService.java
-# no success notifyBuddySubscribed
-# BuddyManagementService.java
-# BuddyManagementService.java
-# no success notifyBuddySubscriberEmpty
-# BuddyManagementService.java
-# BuddyManagementService.java
-# no success notifyBuddySubscriberUnregistered
-# BuddyManagementService.java
-# BuddyManagementService.java
-# no success notifyBuddyUnblocked
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# no success removeBuddyMember
-# BuddyManagementService.java
-# BuddyManagementService.java
-# no success removeBuddyMembers
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# no success sendChatCheckedByWatermark
-# BuddyManagementService.java
-# BuddyManagementService.java
-# no success sendIndividualEventToAllAsync
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# no success unblockBuddyMember
-# BuddyManagementService.java
-# BuddyManagementService.java
-# no success unregisterBuddyAdmin
-# BuddyManagementService.java
-# BuddyManagementService.java
-# no success unregisterBuddyAsync
-# BuddyManagementService.java
-# BuddyManagementService.java
-# no success unregisterBuddy
-# BuddyManagementService.java
-# BuddyManagementService.java
-# no success updateBuddyAdminProfileAttribute
-# BuddyManagementService.java
-# BuddyManagementService.java
-# no success updateBuddyAdminProfileImage
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# no success updateBuddySearchId
-# BuddyManagementService.java
-# BuddyManagementService.java
-# no success updateBuddySettings
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyManagementService.java
-# BuddyMessageRequest.java
+
 struct BuddyMessageRequest {
 	1: ContentType contentType;
 	2: string text;
@@ -595,7 +342,7 @@ struct BuddyMessageRequest {
 	7: bool usePermanent;
 	8: string toMid;
 }
-# BuddyNewsEntry.java
+
 struct BuddyNewsEntry {
 	1: BuddyBanner banner;
 	2: Contact contact;
@@ -604,12 +351,12 @@ struct BuddyNewsEntry {
 	5: i64 releasedTime;
 	6: i64 newsId;
 }
-# BuddyNewsView.java
+
 struct BuddyNewsView {
 	1: bool hasNext;
 	2: list<BuddyNewsEntry> newsEntries;
 }
-# BuddyOnAir.java
+
 struct BuddyOnAir {
 	1: string mid;
 	3: i64 freshnessLifetime;
@@ -631,24 +378,24 @@ struct BuddyOnAir {
 	52: string lowerBannerUrl;
 	53: string lowerBannerLabel;
 }
-# BuddyOnAirLabel.java
+
 enum BuddyOnAirLabel {
 	ON_AIR = 0,
 	LIVE = 1,
 }
-# BuddyOnAirType.java
+
 enum BuddyOnAirType {
 	NORMAL = 0,
 	VIDEOCAM = 1,
 	VOIP = 2,
 	RECORD = 3,
 }
-# BuddyOnAirUrls.java
+
 struct BuddyOnAirUrls {
 	1: map<string, string> hls;
 	2: map<string, string> smoothStreaming;
 }
-# BuddyProfile.java
+
 struct BuddyProfile {
 	1: string buddyId;
 	2: string mid;
@@ -657,7 +404,7 @@ struct BuddyProfile {
 	5: string statusMessage;
 	11: i64 contactCount;
 }
-# BuddyProfilePopup.java
+
 struct BuddyProfilePopup {
 	1: BuddyProfilePopupType popupType;
 	2: string linkUrl;
@@ -665,12 +412,12 @@ struct BuddyProfilePopup {
 	4: i32 textColorRgb;
 	5: string label;
 }
-# BuddyProfilePopupType.java
+
 enum BuddyProfilePopupType {
 	NONE = 0,
 	WEB = 1,
 }
-# BuddyResultState.java
+
 enum BuddyResultState {
 	ACCEPTED = 1,
 	SUCCEEDED = 2,
@@ -684,23 +431,23 @@ enum BuddyResultState {
 	UNREGISTERING_ACCOUNT = 42,
 	NOTIFYING_LEAVE_CHAT = 43,
 }
-# BuddyRichMenuChatBarItem.java
+
 struct BuddyRichMenuChatBarItem {
 	1: string label;
 	2: string body;
 	3: bool selected;
 }
-# BuddyRichMenuContents.java
+
 struct BuddyRichMenuContents {
 	1: string body;
 }
-# BuddySearchRequestSource.java
+
 enum BuddySearchRequestSource {
 	NA = 0,
 	FRIEND_VIEW = 1,
 	OFFICIAL_ACCOUNT_VIEW = 2,
 }
-# BuddySearchResult.java
+
 struct BuddySearchResult {
 	1: string mid;
 	2: string displayName;
@@ -711,78 +458,40 @@ struct BuddySearchResult {
 	7: i32 iconType;
 	8: BotType botType;
 }
-# BuddyService.java
-# BuddyService.java
-# BuddyService.java
-# BuddyService.java
-# BuddyService.java
-# BuddyService.java
-# BuddyService.java
-# BuddyService.java
-# BuddyService.java
-# BuddyService.java
-# BuddyService.java
-# BuddyService.java
-# BuddyService.java
-# BuddyService.java
-# BuddyService.java
-# BuddyService.java
-# BuddyService.java
-# BuddyService.java
-# BuddyService.java
-# BuddyService.java
-# BuddyService.java
-# BuddyService.java
-# BuddyService.java
-# BuddyService.java
-# BuddyService.java
-# BuddyService.java
-# BuddyService.java
-# BuddyService.java
-# BuddyService.java
-# BuddyService.java
-# BuddyService.java
-# BuddyService.java
-# BuddyService.java
-# BuddyService.java
-# BuddyService.java
-# BuddyService.java
-# BuddyService.java
-# BuddyService.java
-# BuddyStatusBar.java
+
 struct BuddyStatusBar {
 	1: string label;
 	2: BuddyStatusBarDisplayType displayType;
 }
-# BuddyStatusBarDisplayType.java
+
 enum BuddyStatusBarDisplayType {
 	NOT_A_FRIEND = 0,
 	ALWAYS = 1,
 }
-# BuddyTopView.java
+
 struct BuddyTopView {
 	1: list<BuddyBanner> banners;
 	2: list<BuddyCollection> collections;
 	3: i64 rotationInterval;
 }
-# BuddyWebChatBarItem.java
+
 struct BuddyWebChatBarItem {
 	1: string label;
 	2: string url;
 }
-# BuddyWidget.java
+
 struct BuddyWidget {
 	1: string icon;
 	2: string label;
 	3: string url;
 }
-# BuddyWidgetListCharBarItem.java
+
 struct BuddyWidgetListCharBarItem {
 	1: string label;
 	2: list<BuddyWidget> widgets;
 	3: bool selected;
 }
-# CallHost.java
+
 struct CallHost {
 	1: string host;
 	2: i32 port;
@@ -800,166 +509,72 @@ enum CarrierCode {
 	JP_DOCOMO_LINE = 4,
 }
 	# Error? ChannelApplicationProvidedService$1.java
-# ChannelApplicationProvidedService$activeBuddySubscriberCount_args.java
+
 	# Error? ChannelApplicationProvidedService$activeBuddySubscriberCount_args.java
-# ChannelApplicationProvidedService$activeBuddySubscriberCount_result.java
-# ChannelApplicationProvidedService$addBuddyToContact_args.java
-# ChannelApplicationProvidedService$addBuddyToContact_result.java
-# ChannelApplicationProvidedService$addOperationForChannel_args.java
-# ChannelApplicationProvidedService$addOperationForChannel_result.java
-# no success addOperationForChannel
+
 	# Error? ChannelApplicationProvidedService$AsyncClient.java
 	# Error? ChannelApplicationProvidedService$AsyncIface.java
 	# Error? ChannelApplicationProvidedService$AsyncProcessor.java
 	# Error? ChannelApplicationProvidedService$Client.java
-# ChannelApplicationProvidedService$createRoomWithBuddy_args.java
-# ChannelApplicationProvidedService$createRoomWithBuddy_result.java
-# ChannelApplicationProvidedService$displayBuddySubscriberCountInBulk_args.java
-# ChannelApplicationProvidedService$displayBuddySubscriberCountInBulk_result.java
-# ChannelApplicationProvidedService$displayBuddySubscriberCount_args.java
+
 	# Error? ChannelApplicationProvidedService$displayBuddySubscriberCount_args.java
-# ChannelApplicationProvidedService$displayBuddySubscriberCount_result.java
-# ChannelApplicationProvidedService$findContactByUseridWithoutAbuseBlockForChannel_args.java
-# ChannelApplicationProvidedService$findContactByUseridWithoutAbuseBlockForChannel_result.java
-# ChannelApplicationProvidedService$getAllContactIdsForChannel_args.java
+
 	# Error? ChannelApplicationProvidedService$getAllContactIdsForChannel_args.java
-# ChannelApplicationProvidedService$getAllContactIdsForChannel_result.java
-# ChannelApplicationProvidedService$getAllSimpleChannelContacts_args.java
-# ChannelApplicationProvidedService$getAllSimpleChannelContacts_result.java
-# ChannelApplicationProvidedService$getCompactContacts_args.java
-# ChannelApplicationProvidedService$getCompactContacts_result.java
-# ChannelApplicationProvidedService$getContactsForChannel_args.java
-# ChannelApplicationProvidedService$getContactsForChannel_result.java
-# ChannelApplicationProvidedService$getDisplayName_args.java
-# ChannelApplicationProvidedService$getDisplayName_result.java
-# ChannelApplicationProvidedService$getExtendedProfile_args.java
+
 	# Error? ChannelApplicationProvidedService$getExtendedProfile_args.java
-# ChannelApplicationProvidedService$getExtendedProfile_result.java
-# ChannelApplicationProvidedService$getFavoriteGroupIdsForChannel_args.java
+
 	# Error? ChannelApplicationProvidedService$getFavoriteGroupIdsForChannel_args.java
-# ChannelApplicationProvidedService$getFavoriteGroupIdsForChannel_result.java
-# ChannelApplicationProvidedService$getFavoriteMidsForChannel_args.java
+
 	# Error? ChannelApplicationProvidedService$getFavoriteMidsForChannel_args.java
-# ChannelApplicationProvidedService$getFavoriteMidsForChannel_result.java
-# ChannelApplicationProvidedService$getFriendMids_args.java
+
 	# Error? ChannelApplicationProvidedService$getFriendMids_args.java
-# ChannelApplicationProvidedService$getFriendMids_result.java
-# ChannelApplicationProvidedService$getGroupMemberMidsForAppPlatform_args.java
-# ChannelApplicationProvidedService$getGroupMemberMidsForAppPlatform_result.java
-# ChannelApplicationProvidedService$getGroupMemberMids_args.java
-# ChannelApplicationProvidedService$getGroupMemberMids_result.java
-# ChannelApplicationProvidedService$getGroupsForChannel_args.java
-# ChannelApplicationProvidedService$getGroupsForChannel_result.java
-# ChannelApplicationProvidedService$getIdentityCredential_args.java
+
 	# Error? ChannelApplicationProvidedService$getIdentityCredential_args.java
-# ChannelApplicationProvidedService$getIdentityCredential_result.java
-# ChannelApplicationProvidedService$getJoinedGroupIdsForChannel_args.java
+
 	# Error? ChannelApplicationProvidedService$getJoinedGroupIdsForChannel_args.java
-# ChannelApplicationProvidedService$getJoinedGroupIdsForChannel_result.java
-# ChannelApplicationProvidedService$getMetaProfile_args.java
+
 	# Error? ChannelApplicationProvidedService$getMetaProfile_args.java
-# ChannelApplicationProvidedService$getMetaProfile_result.java
-# ChannelApplicationProvidedService$getMid_args.java
+
 	# Error? ChannelApplicationProvidedService$getMid_args.java
-# ChannelApplicationProvidedService$getMid_result.java
-# ChannelApplicationProvidedService$getOAFriendMids_args.java
+
 	# Error? ChannelApplicationProvidedService$getOAFriendMids_args.java
-# ChannelApplicationProvidedService$getOAFriendMids_result.java
-# ChannelApplicationProvidedService$getPersonalInfos_args.java
-# ChannelApplicationProvidedService$getPersonalInfos_result.java
-# ChannelApplicationProvidedService$getPhoneInfoFromPhoneNumber_args.java
-# ChannelApplicationProvidedService$getPhoneInfoFromPhoneNumber_result.java
-# ChannelApplicationProvidedService$getPreferredDisplayName_args.java
-# ChannelApplicationProvidedService$getPreferredDisplayName_result.java
-# ChannelApplicationProvidedService$getPrimaryClientForChannel_args.java
+
 	# Error? ChannelApplicationProvidedService$getPrimaryClientForChannel_args.java
-# ChannelApplicationProvidedService$getPrimaryClientForChannel_result.java
-# ChannelApplicationProvidedService$getPrimaryClientsForChannel_args.java
-# ChannelApplicationProvidedService$getPrimaryClientsForChannel_result.java
-# ChannelApplicationProvidedService$getProfileForChannel_args.java
+
 	# Error? ChannelApplicationProvidedService$getProfileForChannel_args.java
-# ChannelApplicationProvidedService$getProfileForChannel_result.java
-# ChannelApplicationProvidedService$getReverseCompactContacts_args.java
-# ChannelApplicationProvidedService$getReverseCompactContacts_result.java
-# ChannelApplicationProvidedService$getRoomInformation_args.java
-# ChannelApplicationProvidedService$getRoomInformation_result.java
-# ChannelApplicationProvidedService$getRoomMemberMidsForAppPlatform_args.java
-# ChannelApplicationProvidedService$getRoomMemberMidsForAppPlatform_result.java
-# ChannelApplicationProvidedService$getSimpleChannelContacts_args.java
-# ChannelApplicationProvidedService$getSimpleChannelContacts_result.java
-# ChannelApplicationProvidedService$getUserCountryForBilling_args.java
-# ChannelApplicationProvidedService$getUserCountryForBilling_result.java
-# ChannelApplicationProvidedService$getUserCreateTime_args.java
+
 	# Error? ChannelApplicationProvidedService$getUserCreateTime_args.java
-# ChannelApplicationProvidedService$getUserCreateTime_result.java
-# ChannelApplicationProvidedService$getUserIdentities_args.java
+
 	# Error? ChannelApplicationProvidedService$getUserIdentities_args.java
-# ChannelApplicationProvidedService$getUserIdentities_result.java
-# ChannelApplicationProvidedService$getUserLanguage_args.java
+
 	# Error? ChannelApplicationProvidedService$getUserLanguage_args.java
-# ChannelApplicationProvidedService$getUserLanguage_result.java
-# ChannelApplicationProvidedService$getUserLastSentMessageTimeStamp_args.java
-# ChannelApplicationProvidedService$getUserLastSentMessageTimeStamp_result.java
-# ChannelApplicationProvidedService$getUserMidsWhoAddedMe_args.java
+
 	# Error? ChannelApplicationProvidedService$getUserMidsWhoAddedMe_args.java
-# ChannelApplicationProvidedService$getUserMidsWhoAddedMe_result.java
-# ChannelApplicationProvidedService$getUserStatus_args.java
-# ChannelApplicationProvidedService$getUserStatus_result.java
-# ChannelApplicationProvidedService$getUserTickets_args.java
-# ChannelApplicationProvidedService$getUserTickets_result.java
+
 	# Error? ChannelApplicationProvidedService$Iface.java
-# ChannelApplicationProvidedService$isAllowSecondaryDeviceLogin_args.java
+
 	# Error? ChannelApplicationProvidedService$isAllowSecondaryDeviceLogin_args.java
-# ChannelApplicationProvidedService$isAllowSecondaryDeviceLogin_result.java
-# ChannelApplicationProvidedService$isGroupMember_args.java
-# ChannelApplicationProvidedService$isGroupMember_result.java
-# ChannelApplicationProvidedService$isInContact_args.java
-# ChannelApplicationProvidedService$isInContact_result.java
-# ChannelApplicationProvidedService$isRoomMember_args.java
-# ChannelApplicationProvidedService$isRoomMember_result.java
-# ChannelApplicationProvidedService$lookupGroupMembers_args.java
-# ChannelApplicationProvidedService$lookupGroupMembers_result.java
-# ChannelApplicationProvidedService$lookupRoomMembers_args.java
-# ChannelApplicationProvidedService$lookupRoomMembers_result.java
-# ChannelApplicationProvidedService$notifyNotiCenterEvent_args.java
-# ChannelApplicationProvidedService$notifyNotiCenterEvent_result.java
-# no success notifyNotiCenterEvent
+
 	# Error? ChannelApplicationProvidedService$Processor.java
-# ChannelApplicationProvidedService$registerChannelCP_args.java
-# ChannelApplicationProvidedService$registerChannelCP_result.java
-# ChannelApplicationProvidedService$sendMessageForChannel_args.java
-# ChannelApplicationProvidedService$sendMessageForChannel_result.java
-# ChannelApplicationProvidedService$sendMessageWithoutRelationship_args.java
-# ChannelApplicationProvidedService$sendMessageWithoutRelationship_result.java
-# ChannelApplicationProvidedService$sendPinCodeOperation_args.java
-# ChannelApplicationProvidedService$sendPinCodeOperation_result.java
-# no success sendPinCodeOperation
-# ChannelApplicationProvidedService$sendSystemOAMessage_args.java
-# ChannelApplicationProvidedService$sendSystemOAMessage_result.java
-# ChannelApplicationProvidedService$updateExtendedProfileAttribute_args.java
-# ChannelApplicationProvidedService$updateExtendedProfileAttribute_result.java
-# no success updateExtendedProfileAttribute
-# ChannelApplicationProvidedService$updateProfileAttributeForChannel_args.java
-# ChannelApplicationProvidedService$updateProfileAttributeForChannel_result.java
-# no success updateProfileAttributeForChannel
+
 	# Error? ChannelApplicationProvidedService.java
-# ChannelConfiguration.java
+
 enum ChannelConfiguration {
 	MESSAGE = 0,
 	MESSAGE_NOTIFICATION = 1,
 	NOTIFICATION_CENTER = 2,
 }
-# ChannelDomain.java
+
 struct ChannelDomain {
 	1: string host;
 	2: bool removed;
 }
-# ChannelDomains.java
+
 struct ChannelDomains {
 	1: list<ChannelDomain> channelDomains;
 	2: i64 revision;
 }
-# ChannelErrorCode.java
+
 enum ChannelErrorCode {
 	ILLEGAL_ARGUMENT = 0,
 	INTERNAL_ERROR = 1,
@@ -969,18 +584,18 @@ enum ChannelErrorCode {
 	COIN_NOT_USABLE = 5,
 	WEBVIEW_NOT_ALLOWED = 6,
 }
-# ChannelException.java
+
 exception ChannelException {
 	1: ChannelErrorCode code;
 	2: string reason;
 	3: map<string, string> parameterMap;
 }
-# ChannelIdWithLastUpdated.java
+
 struct ChannelIdWithLastUpdated {
 	1: string channelId;
 	2: i64 lastUpdated;
 }
-# ChannelInfo.java
+
 struct ChannelInfo {
 	1: string channelId;
 	3: string name;
@@ -997,12 +612,12 @@ struct ChannelInfo {
 	15: list<ChannelDomain> channelDomains;
 	16: i64 updatedTimestamp;
 }
-# ChannelInfos.java
+
 struct ChannelInfos {
 	1: list<ChannelInfo> channelInfos;
 	2: i64 revision;
 }
-# ChannelNotificationSetting.java
+
 struct ChannelNotificationSetting {
 	1: string channelId;
 	2: string name;
@@ -1010,91 +625,41 @@ struct ChannelNotificationSetting {
 	4: bool messageReceivable;
 	5: bool showDefault;
 }
-# ChannelPermission.java
+
 enum ChannelPermission {
 	PROFILE = 0,
 	FRIENDS = 1,
 	GROUP = 2,
 }
-# ChannelProvider.java
+
 struct ChannelProvider {
 	1: string name;
 }
-# ChannelService.java
-# ChannelService.java
-# ChannelService.java
-# ChannelService.java
-# ChannelService.java
-# ChannelService.java
-# ChannelService.java
-# ChannelService.java
-# ChannelService.java
-# ChannelService.java
-# ChannelService.java
-# ChannelService.java
-# ChannelService.java
-# ChannelService.java
-# ChannelService.java
-# ChannelService.java
-# ChannelService.java
-# ChannelService.java
-# ChannelService.java
-# ChannelService.java
-# ChannelService.java
-# ChannelService.java
-# ChannelService.java
-# ChannelService.java
-# ChannelService.java
-# ChannelService.java
-# ChannelService.java
-# ChannelService.java
-# ChannelService.java
-# ChannelService.java
-# ChannelService.java
-# ChannelService.java
-# ChannelService.java
-# ChannelService.java
-# ChannelService.java
-# ChannelService.java
-# ChannelService.java
-# ChannelService.java
-# ChannelService.java
-# ChannelService.java
-# ChannelService.java
-# ChannelService.java
-# no success revokeChannel
-# ChannelService.java
-# ChannelService.java
-# ChannelService.java
-# ChannelService.java
-# no success updateChannelNotificationSetting
-# ChannelService.java
-# ChannelService.java
-# ChannelSettings.java
+
 struct ChannelSettings {
 	1: bool unapprovedMessageReceivable;
 }
-# ChannelSyncDatas.java
+
 struct ChannelSyncDatas {
 	1: list<ChannelInfo> channelInfos;
 	2: list<ChannelDomain> channelDomains;
 	3: i64 revision;
 	4: i64 expires;
 }
-# ChannelSyncTarget.java
+
 enum ChannelSyncTarget {
 	ALL = 255,
 	CHANNEL_INFO = 1,
 	CHANNEL_TOKEN = 2,
 	COMMON_DOMAIN = 4,
 }
-# ChannelSyncType.java
+
 enum ChannelSyncType {
 	SYNC = 0,
 	REMOVE = 1,
 	REMOVE_ALL = 2,
 }
-# ChannelToken.java
+
 struct ChannelToken {
 	1: string token;
 	2: string obsToken;
@@ -1102,19 +667,19 @@ struct ChannelToken {
 	4: string refreshToken;
 	5: string channelAccessToken;
 }
-# ClientLastStatus.java
+
 struct ClientLastStatus {
 	1: i64 lastRev;
 	2: i32 badgeCount;
 }
-# Coin.java
+
 struct Coin {
 	1: i32 freeCoinBalance;
 	2: i32 payedCoinBalance;
 	3: i32 totalCoinBalance;
 	4: i32 rewardCoinBalance;
 }
-# CoinHistory.java
+
 struct CoinHistory {
 	1: i64 payDate;
 	2: i32 coinBalance;
@@ -1129,7 +694,7 @@ struct CoinHistory {
 	11: CoinPayLoad payload;
 	12: string channelId;
 }
-# CoinHistoryCondition.java
+
 struct CoinHistoryCondition {
 	1: i64 start;
 	2: i32 size;
@@ -1137,20 +702,20 @@ struct CoinHistoryCondition {
 	4: string eddt;
 	5: PaymentType appStoreCode;
 }
-# CoinHistoryResult.java
+
 struct CoinHistoryResult {
 	1: list<CoinHistory> historys;
 	2: Coin balance;
 	3: bool hasNext;
 }
-# CoinPayLoad.java
+
 struct CoinPayLoad {
 	1: i32 payCoin;
 	2: i32 freeCoin;
 	3: PayloadType type;
 	4: i32 rewardCoin;
 }
-# CoinProductItem.java
+
 struct CoinProductItem {
 	1: string itemId;
 	2: i32 coin;
@@ -1161,7 +726,7 @@ struct CoinProductItem {
 	8: string name;
 	9: string desc;
 }
-# CoinPurchaseConfirm.java
+
 struct CoinPurchaseConfirm {
 	1: string orderId;
 	2: PaymentType appStoreCode;
@@ -1171,7 +736,7 @@ struct CoinPurchaseConfirm {
 	6: string requestType;
 	7: bool ignoreReceipt;
 }
-# CoinPurchaseReservation.java
+
 struct CoinPurchaseReservation {
 	1: string productId;
 	2: string country;
@@ -1182,17 +747,7 @@ struct CoinPurchaseReservation {
 	7: PaymentPgType pgCode;
 	8: string redirectUrl;
 }
-# CoinService.java
-# CoinService.java
-# CoinService.java
-# CoinService.java
-# CoinService.java
-# CoinService.java
-# CoinService.java
-# CoinService.java
-# CoinService.java
-# CoinService.java
-# CoinUseReservation.java
+
 struct CoinUseReservation {
 	1: string channelId;
 	2: string shopOrderId;
@@ -1200,13 +755,13 @@ struct CoinUseReservation {
 	4: list<CoinUseReservationItem> items;
 	5: string country;
 }
-# CoinUseReservationItem.java
+
 struct CoinUseReservationItem {
 	1: string itemId;
 	2: string itemName;
 	3: i32 amount;
 }
-# CommitMessageResult.java
+
 struct CommitMessageResult {
 	1: Message message;
 	2: CommitMessageResultCode code;
@@ -1216,25 +771,25 @@ struct CommitMessageResult {
 	6: i64 unregisterCount;
 	7: i64 blockCount;
 }
-# CommitMessageResultCode.java
+
 enum CommitMessageResultCode {
 	DELIVERED = 0,
 	DELIVERY_SKIPPED = 1,
 	DELIVERY_RESTRICTED = 2,
 }
-# CommitSendMessagesToMidRequest.java
+
 struct CommitSendMessagesToMidRequest {
 	1: i32 seq;
 	2: list<string> messageIds;
 }
-# CommitSendMessagesToMidResponse.java
+
 struct CommitSendMessagesToMidResponse {
 	1: i64 successCount;
 	2: i64 failCount;
 	3: i64 unregisterCount;
 	4: i64 blockCount;
 }
-# CompactContact.java
+
 struct CompactContact {
 	1: string mid;
 	2: i64 createdTime;
@@ -1243,12 +798,12 @@ struct CompactContact {
 	5: i64 settings;
 	6: string displayNameOverridden;
 }
-# Configurations.java
+
 struct Configurations {
 	1: i64 revision;
 	2: map<string, string> configMap;
 }
-# Contact.java
+
 struct Contact {
 	1: string mid;
 	2: i64 createdTime;
@@ -1274,20 +829,20 @@ struct Contact {
 	40: string musicProfile;
 	42: string videoProfile;
 }
-# ContactAttribute.java
+
 enum ContactAttribute {
 	CONTACT_ATTRIBUTE_CAPABLE_VOICE_CALL = 1,
 	CONTACT_ATTRIBUTE_CAPABLE_VIDEO_CALL = 2,
 	CONTACT_ATTRIBUTE_CAPABLE_MY_HOME = 16,
 	CONTACT_ATTRIBUTE_CAPABLE_BUDDY = 32,
 }
-# ContactCategory.java
+
 enum ContactCategory {
 	NORMAL = 0,
 	RECOMMEND = 1,
 	BLOCKED = 2,
 }
-# ContactModification.java
+
 struct ContactModification {
 	1: ModificationType type;
 	2: string luid;
@@ -1295,31 +850,31 @@ struct ContactModification {
 	12: list<string> emails;
 	13: list<string> userids;
 }
-# ContactRegistration.java
+
 struct ContactRegistration {
 	1: Contact contact;
 	10: string luid;
 	11: ContactType contactType;
 	12: string contactKey;
 }
-# ContactRelation.java
+
 enum ContactRelation {
 	ONEWAY = 0,
 	BOTH = 1,
 	NOT_REGISTERED = 2,
 }
-# ContactReport.java
+
 struct ContactReport {
 	1: string mid;
 	2: bool exists;
 	3: Contact contact;
 }
-# ContactReportResult.java
+
 struct ContactReportResult {
 	1: string mid;
 	2: bool exists;
 }
-# ContactSetting.java
+
 enum ContactSetting {
 	CONTACT_SETTING_NOTIFICATION_DISABLE = 1,
 	CONTACT_SETTING_DISPLAY_NAME_OVERRIDE = 2,
@@ -1327,7 +882,7 @@ enum ContactSetting {
 	CONTACT_SETTING_FAVORITE = 8,
 	CONTACT_SETTING_DELETE = 16,
 }
-# ContactStatus.java
+
 enum ContactStatus {
 	UNSPECIFIED = 0,
 	FRIEND = 1,
@@ -1337,14 +892,14 @@ enum ContactStatus {
 	DELETED = 5,
 	DELETED_BLOCKED = 6,
 }
-# ContactTransition.java
+
 struct ContactTransition {
 	1: string ownerMid;
 	2: string targetMid;
 	3: ContactStatus previousStatus;
 	4: ContactStatus resultStatus;
 }
-# ContactType.java
+
 enum ContactType {
 	MID = 0,
 	PHONE = 1,
@@ -1365,7 +920,7 @@ enum ContactType {
 	BBM = 2309,
 	BEACON = 11,
 }
-# ContentType.java
+
 enum ContentType {
 	NONE = 0,
 	IMAGE = 1,
@@ -1390,18 +945,18 @@ enum ContentType {
 	PAYMENT = 20,
 	EXTIMAGE = 21,
 }
-# CustomMode.java
+
 enum CustomMode {
 	PROMOTION_FRIENDS_INVITE = 1,
 	CAPABILITY_SERVER_SIDE_SMS = 2,
 	LINE_CLIENT_ANALYTICS_CONFIGURATION = 3,
 }
-# DeviceBooleanStateKey.java
+
 enum DeviceBooleanStateKey {
 	BEACON_AGREEMENT = 1,
 	BLUETOOTH = 2,
 }
-# DeviceInfo.java
+
 struct DeviceInfo {
 	1: string deviceName;
 	2: string systemName;
@@ -1412,18 +967,18 @@ struct DeviceInfo {
 	11: string carrierName;
 	20: ApplicationType applicationType;
 }
-# DeviceStringStateKey.java
+
 enum DeviceStringStateKey {
 	LOCATION_OS = 1,
 	LOCATION_APP = 2,
 }
-# Diff.java
+
 enum Diff {
 	ADDED = 0,
 	UPDATED = 1,
 	REMOVED = 2,
 }
-# E2EEGroupSharedKey.java
+
 struct E2EEGroupSharedKey {
 	1: i32 version;
 	2: i32 groupKeyId;
@@ -1434,7 +989,7 @@ struct E2EEGroupSharedKey {
 	7: binary encryptedSharedKey;
 	8: set<ContentType> allowedTypes;
 }
-# E2EEKey.java
+
 struct E2EEKey {
 	1: i32 version;
 	2: i32 keyId;
@@ -1442,23 +997,23 @@ struct E2EEKey {
 	5: binary privateKey;
 	6: i64 createdTime;
 }
-# E2EEKeyChain.java
+
 struct E2EEKeyChain {
 	1: list<E2EEKey> keychain;
 }
-# E2EENegotiationResult.java
+
 struct E2EENegotiationResult {
 	1: set<ContentType> allowedTypes;
 	2: E2EEPublicKey publicKey;
 }
-# E2EEPublicKey.java
+
 struct E2EEPublicKey {
 	1: i32 version;
 	2: i32 keyId;
 	4: binary keyData;
 	5: i64 createdTime;
 }
-# EmailConfirmation.java
+
 struct EmailConfirmation {
 	1: bool usePasswordSet;
 	2: string email;
@@ -1466,29 +1021,29 @@ struct EmailConfirmation {
 	4: bool ignoreDuplication;
 	5: bool useEmailOnly;
 }
-# EmailConfirmationResult.java
+
 struct EmailConfirmationResult {
 	1: string certificate;
 }
-# EmailConfirmationSession.java
+
 struct EmailConfirmationSession {
 	1: EmailConfirmationType emailConfirmationType;
 	2: string verifier;
 	3: string targetEmail;
 }
-# EmailConfirmationStatus.java
+
 enum EmailConfirmationStatus {
 	NOT_SPECIFIED = 0,
 	NOT_YET = 1,
 	DONE = 3,
 	NEED_ENFORCED_INPUT = 4,
 }
-# EmailConfirmationType.java
+
 enum EmailConfirmationType {
 	SERVER_SIDE_EMAIL = 0,
 	CLIENT_SIDE_EMAIL = 1,
 }
-# ErrorCode.java
+
 enum ErrorCode {
 	ILLEGAL_ARGUMENT = 0,
 	AUTHENTICATION_FAILED = 1,
@@ -1595,15 +1150,15 @@ enum ErrorCode {
 	DUPLICATED = 106,
 	BANNED = 107,
 }
-# ExtendedProfile.java
+
 struct ExtendedProfile {
 	1: ExtendedProfileBirthday birthday;
 }
-# ExtendedProfileAttribute.java
+
 enum ExtendedProfileAttribute {
 	# Error? ExtendedProfileAttribute.java
 }
-# ExtendedProfileBirthday.java
+
 struct ExtendedProfileBirthday {
 	1: string year;
 	2: PrivacyLevelType yearPrivacyLevelType;
@@ -1612,26 +1167,24 @@ struct ExtendedProfileBirthday {
 	6: PrivacyLevelType dayPrivacyLevelType;
 	7: bool dayEnabled;
 }
-# ExternalInterlockService.java
-# ExternalInterlockService.java
-# FeatureType.java
+
 enum FeatureType {
 	OBS_VIDEO = 1,
 	OBS_GENERAL = 2,
 }
-# FriendChannelMatricesResponse.java
+
 struct FriendChannelMatricesResponse {
 	1: i64 expires;
 	2: list<FriendChannelMatrix> matrices;
 }
-# FriendChannelMatrix.java
+
 struct FriendChannelMatrix {
 	1: string channelId;
 	2: string representMid;
 	3: i32 count;
 	4: i32 point;
 }
-# FriendRequest.java
+
 struct FriendRequest {
 	1: string eMid;
 	2: string mid;
@@ -1644,18 +1197,18 @@ struct FriendRequest {
 	11: string picturePath;
 	12: string pictureStatus;
 }
-# FriendRequestDirection.java
+
 enum FriendRequestDirection {
 	INCOMING = 1,
 	OUTGOING = 2,
 }
-# FriendRequestMethod.java
+
 enum FriendRequestMethod {
 	TIMELINE = 1,
 	NEARBY = 2,
 	SQUARE = 3,
 }
-# FriendRequestsInfo.java
+
 struct FriendRequestsInfo {
 	1: i32 totalIncomingCount;
 	2: i32 totalOutgoingCount;
@@ -1664,27 +1217,27 @@ struct FriendRequestsInfo {
 	5: i32 totalIncomingLimit;
 	6: i32 totalOutgoingLimit;
 }
-# FriendRequestStatus.java
+
 enum FriendRequestStatus {
 	NONE = 0,
 	AVAILABLE = 1,
 	ALREADY_REQUESTED = 2,
 	UNAVAILABLE = 3,
 }
-# Geolocation.java
+
 struct Geolocation {
 	1: double longitude;
 	2: double latitude;
 }
-# GetBalanceRequest.java
+
 struct GetBalanceRequest {
 }
 	# Error? GetBalanceRequest.java
-# GetBalanceResponse.java
+
 struct GetBalanceResponse {
 	1: Balance balance;
 }
-# GetCoinHistoryRequest.java
+
 struct GetCoinHistoryRequest {
 	1: PaymentType appStoreCode;
 	2: string country;
@@ -1693,29 +1246,29 @@ struct GetCoinHistoryRequest {
 	5: i32 offset;
 	6: i32 limit;
 }
-# GetCoinHistoryResponse.java
+
 struct GetCoinHistoryResponse {
 	1: list<CoinHistory> histories;
 	2: Coin balance;
 	3: i32 offset;
 	4: bool hasNext;
 }
-# GetCoinProductsRequest.java
+
 struct GetCoinProductsRequest {
 	1: PaymentType appStoreCode;
 	2: string country;
 	3: string language;
 	4: PaymentPgType pgCode;
 }
-# GetCoinProductsResponse.java
+
 struct GetCoinProductsResponse {
 	1: list<CoinProductItem> items;
 }
-# GetTotalCoinBalanceRequest.java
+
 struct GetTotalCoinBalanceRequest {
 	1: PaymentType appStoreCode;
 }
-# GetTotalCoinBalanceResponse.java
+
 struct GetTotalCoinBalanceResponse {
 	1: string totalBalance;
 	2: string paidCoinBalance;
@@ -1723,7 +1276,7 @@ struct GetTotalCoinBalanceResponse {
 	4: string rewardCoinBalance;
 	5: string expectedAutoExchangedCoinBalance;
 }
-# Group.java
+
 struct Group {
 	1: string id;
 	2: i64 createdTime;
@@ -1739,7 +1292,7 @@ struct Group {
 	40: list<string> memberMids;
 	41: list<string> inviteeMids;
 }
-# GroupAttribute.java
+
 enum GroupAttribute {
 	ALL = 255,
 	NAME = 1,
@@ -1747,7 +1300,7 @@ enum GroupAttribute {
 	PREVENTED_JOIN_BY_TICKET = 4,
 	NOTIFICATION_SETTING = 8,
 }
-# GroupCall.java
+
 struct GroupCall {
 	1: bool online;
 	2: string chatMid;
@@ -1756,41 +1309,41 @@ struct GroupCall {
 	5: i64 started;
 	6: GroupCallMediaType mediaType;
 }
-# GroupCallMediaType.java
+
 enum GroupCallMediaType {
 	AUDIO = 1,
 	VIDEO = 2,
 }
-# GroupCallRoute.java
+
 struct GroupCallRoute {
 	1: string token;
 	2: CallHost cscf;
 	3: CallHost mix;
 }
-# GroupPreference.java
+
 struct GroupPreference {
 	11: string invitationTicket;
 	12: i64 favoriteTimestamp;
 }
-# GroupPreferenceAttribute.java
+
 enum GroupPreferenceAttribute {
 	INVITATION_TICKET = 1,
 	FAVORITE_TIMESTAMP = 2,
 }
-# IdentityCredential.java
+
 struct IdentityCredential {
 	1: IdentityProvider provider;
 	2: string identifier;
 	3: string password;
 }
-# IdentityProvider.java
+
 enum IdentityProvider {
 	UNKNOWN = 0,
 	LINE = 1,
 	NAVER_KR = 2,
 	LINE_PHONE = 3,
 }
-# Location.java
+
 struct Location {
 	1: string title;
 	2: string address;
@@ -1798,7 +1351,7 @@ struct Location {
 	4: double longitude;
 	5: string phone;
 }
-# LoginRequest.java
+
 struct LoginRequest {
 	1: LoginType type;
 	2: IdentityProvider identityProvider;
@@ -1812,7 +1365,7 @@ struct LoginRequest {
 	10: binary secret;
 	11: i32 e2eeVersion;
 }
-# LoginResult.java
+
 struct LoginResult {
 	1: string authToken;
 	2: string certificate;
@@ -1823,14 +1376,14 @@ struct LoginResult {
 	7: string displayMessage;
 	8: VerificationSessionData sessionForSMSConfirm;
 }
-# LoginResultType.java
+
 enum LoginResultType {
 	SUCCESS = 1,
 	REQUIRE_QRCODE = 2,
 	REQUIRE_DEVICE_CONFIRM = 3,
 	REQUIRE_SMS_CONFIRM = 4,
 }
-# LoginSession.java
+
 struct LoginSession {
 	1: string tokenKey;
 	3: i64 expirationTime;
@@ -1838,13 +1391,13 @@ struct LoginSession {
 	12: string systemName;
 	22: string accessLocation;
 }
-# LoginType.java
+
 enum LoginType {
 	ID_CREDENTIAL = 0,
 	QRCODE = 1,
 	ID_CREDENTIAL_WITH_E2EE = 2,
 }
-# Message.java
+
 struct Message {
 	1: string from_;
 	2: string to;
@@ -1865,12 +1418,12 @@ struct Message {
 	23: i32 readCount;
 	24: ServiceCode relatedMessageServiceCode;
 }
-# MessageBoxV2MessageId.java
+
 struct MessageBoxV2MessageId {
 	1: i64 deliveredTime;
 	2: i64 messageId;
 }
-# MessageCommitResult.java
+
 struct MessageCommitResult {
 	1: string requestId;
 	2: BuddyResultState state;
@@ -1884,25 +1437,25 @@ struct MessageCommitResult {
 	16: i64 unrelatedCount;
 	21: string errorDescription;
 }
-# MessageRelationType.java
+
 enum MessageRelationType {
 	FORWARD = 0,
 	AUTO_REPLY = 1,
 	SUBORDINATE = 2,
 }
-# MessageStoreResult.java
+
 struct MessageStoreResult {
 	1: string requestId;
 	2: list<string> messageIds;
 }
-# MetaProfile.java
+
 struct MetaProfile {
 	1: i64 createTime;
 	2: string regionCode;
 	3: map<RegistrationType, string> identities;
 	4: string udid;
 }
-# MIDType.java
+
 enum MIDType {
 	USER = 0,
 	ROOM = 1,
@@ -1911,19 +1464,19 @@ enum MIDType {
 	SQUARE_CHAT = 4,
 	SQUARE_MEMBER = 5,
 }
-# ModificationType.java
+
 enum ModificationType {
 	ADD = 0,
 	REMOVE = 1,
 	MODIFY = 2,
 }
-# MoretabRecommend.java
+
 struct MoretabRecommend {
 	1: list<MoretabRecommendAccount> accounts;
 	2: i64 nextUpdateTime;
 	3: i64 cacheTtlMillis;
 }
-# MoretabRecommendAccount.java
+
 struct MoretabRecommendAccount {
 	1: string mid;
 	2: string displayName;
@@ -1931,7 +1484,7 @@ struct MoretabRecommendAccount {
 	4: string pictureStatus;
 	5: string picturePath;
 }
-# NearbyEntry.java
+
 struct NearbyEntry {
 	1: string emid;
 	2: double distance;
@@ -1939,7 +1492,7 @@ struct NearbyEntry {
 	4: map<string, string> property;
 	5: Profile profile;
 }
-# NotiCenterEventData.java
+
 struct NotiCenterEventData {
 	1: string id;
 	2: string to;
@@ -1952,12 +1505,12 @@ struct NotiCenterEventData {
 	9: map<string, string> content;
 	10: map<string, string> push;
 }
-# NotificationFetchResult.java
+
 struct NotificationFetchResult {
 	1: NotificationItemFetchMode fetchMode;
 	2: list<NotificationItem> itemList;
 }
-# NotificationItem.java
+
 struct NotificationItem {
 	1: string id;
 	2: string from_;
@@ -1968,12 +1521,12 @@ struct NotificationItem {
 	8: i64 createdTime;
 	9: map<string, string> content;
 }
-# NotificationItemFetchMode.java
+
 enum NotificationItemFetchMode {
 	ALL = 0,
 	APPEND = 1,
 }
-# NotificationStatus.java
+
 enum NotificationStatus {
 	NOTIFICATION_ITEM_EXIST = 1,
 	TIMELINE_ITEM_EXIST = 2,
@@ -1989,7 +1542,7 @@ enum NotificationStatus {
 	BEAD_ITEM_HIDE = 2048,
 	BEAD_ITEM_SHOW = 4096,
 }
-# NotificationType.java
+
 enum NotificationType {
 	APPLE_APNS = 1,
 	GOOGLE_C2DM = 2,
@@ -2006,7 +1559,7 @@ enum NotificationType {
 	APPLE_APNS_VOIP = 19,
 	MS_WNS = 20,
 }
-# Operation.java
+
 struct Operation {
 	1: i64 revision;
 	2: i64 createdTime;
@@ -2019,13 +1572,13 @@ struct Operation {
 	12: string param3;
 	20: Message message;
 }
-# OpStatus.java
+
 enum OpStatus {
 	NORMAL = 0,
 	ALERT_DISABLED = 1,
 	ALWAYS = 2,
 }
-# OpType.java
+
 enum OpType {
 	END_OF_OPERATION = 0,
 	UPDATE_PROFILE = 1,
@@ -2120,21 +1673,21 @@ enum OpType {
 	RECEIVE_READ_WATERMARK = 91,
 	NOTIFIED_MESSAGE_DELIVERED = 92,
 }
-# OTPResult.java
+
 struct OTPResult {
 	1: string otpId;
 	2: string otp;
 }
-# PaidCallAdCountry.java
+
 struct PaidCallAdCountry {
 	1: string countryCode;
 	2: string rateDivision;
 }
-# PaidCallAdResult.java
+
 struct PaidCallAdResult {
 	1: i32 adRemains;
 }
-# PaidCallBalance.java
+
 struct PaidCallBalance {
 	1: PaidCallProductType productType;
 	2: string productName;
@@ -2147,7 +1700,7 @@ struct PaidCallBalance {
 	9: i64 endTime;
 	10: bool autopayEnabled;
 }
-# PaidCallCurrencyExchangeRate.java
+
 struct PaidCallCurrencyExchangeRate {
 	1: string currencyCode;
 	2: string currencyName;
@@ -2156,7 +1709,7 @@ struct PaidCallCurrencyExchangeRate {
 	5: string coinRate;
 	6: string creditRate;
 }
-# PaidCallDialing.java
+
 struct PaidCallDialing {
 	1: PaidCallType type;
 	2: string dialedNumber;
@@ -2177,7 +1730,7 @@ struct PaidCallDialing {
 	21: i32 adRemains;
 	22: string adSessionId;
 }
-# PaidCallerIdStatus.java
+
 enum PaidCallerIdStatus {
 	NOT_SPECIFIED = 0,
 	VALID = 1,
@@ -2186,7 +1739,7 @@ enum PaidCallerIdStatus {
 	LIMIT_EXCEEDED = 4,
 	LIMIT_EXCEEDED_AND_VERIFICATION_REQUIRED = 5,
 }
-# PaidCallHistory.java
+
 struct PaidCallHistory {
 	1: i64 seq;
 	2: PaidCallType type;
@@ -2204,36 +1757,36 @@ struct PaidCallHistory {
 	14: string unit;
 	15: string result;
 }
-# PaidCallHistoryResult.java
+
 struct PaidCallHistoryResult {
 	1: list<PaidCallHistory> historys;
 	2: bool hasNext;
 }
-# PaidCallMetadataResult.java
+
 struct PaidCallMetadataResult {
 	1: list<PaidCallCurrencyExchangeRate> currencyExchangeRates;
 	2: list<string> recommendedCountryCodes;
 	3: list<PaidCallAdCountry> adCountries;
 }
-# PaidCallProductType.java
+
 enum PaidCallProductType {
 	COIN = 0,
 	CREDIT = 1,
 	MONTHLY = 2,
 }
-# PaidCallRedeemResult.java
+
 struct PaidCallRedeemResult {
 	1: string eventName;
 	2: i32 eventAmount;
 }
-# PaidCallResponse.java
+
 struct PaidCallResponse {
 	1: CallHost host;
 	2: PaidCallDialing dialing;
 	3: string token;
 	4: list<SpotItem> spotItems;
 }
-# PaidCallType.java
+
 enum PaidCallType {
 	OUT = 0,
 	IN = 1,
@@ -2242,14 +1795,14 @@ enum PaidCallType {
 	AD = 4,
 	CS = 5,
 }
-# PaidCallUserRate.java
+
 struct PaidCallUserRate {
 	1: string countryCode;
 	2: i32 rate;
 	3: string rateDivision;
 	4: string rateName;
 }
-# PayloadType.java
+
 enum PayloadType {
 	PAYLOAD_BUY = 101,
 	PAYLOAD_CS = 111,
@@ -2258,13 +1811,13 @@ enum PayloadType {
 	PAYLOAD_POINT_AUTO_EXCHANGED = 141,
 	PAYLOAD_POINT_MANUAL_EXCHANGED = 151,
 }
-# PaymentPgType.java
+
 enum PaymentPgType {
 	PAYMENT_PG_NONE = 0,
 	PAYMENT_PG_AU = 1,
 	PAYMENT_PG_AL = 2,
 }
-# PaymentReservation.java
+
 struct PaymentReservation {
 	1: string receiverMid;
 	2: string productId;
@@ -2277,27 +1830,25 @@ struct PaymentReservation {
 	9: i32 messageTemplate;
 	10: i64 packageId;
 }
-# PaymentReservationResult.java
+
 struct PaymentReservationResult {
 	1: string orderId;
 	2: string confirmUrl;
 	3: map<string, string> extras;
 }
-# PaymentType.java
+
 enum PaymentType {
 	PAYMENT_APPLE = 1,
 	PAYMENT_GOOGLE = 2,
 }
-# PersonalInfo.java
+
 enum PersonalInfo {
 	EMAIL = 0,
 	PHONE = 1,
 	BIRTHDAY = 2,
 	RAW_BIRTHDAY = 3,
 }
-# PersonaService.java
-# PersonaService.java
-# PhoneInfoForChannel.java
+
 struct PhoneInfoForChannel {
 	1: string mid;
 	2: string normalizedPhoneNumber;
@@ -2305,25 +1856,25 @@ struct PhoneInfoForChannel {
 	4: bool allowedToReceiveMessageFromNonFriend;
 	5: string region;
 }
-# PhoneVerificationResult.java
+
 struct PhoneVerificationResult {
 	1: VerificationResult verificationResult;
 	2: AccountMigrationCheckType accountMigrationCheckType;
 	3: bool recommendAddFriends;
 }
-# PlaceSearchInfo.java
+
 struct PlaceSearchInfo {
 	1: string name;
 	2: string address;
 	3: double latitude;
 	4: double longitude;
 }
-# PlaceSearchProvider.java
+
 enum PlaceSearchProvider {
 	GOOGLE = 0,
 	BAIDU = 1,
 }
-# PointErrorCode.java
+
 enum PointErrorCode {
 	REQUEST_DUPLICATION = 3001,
 	INVALID_PARAMETER = 3002,
@@ -2346,25 +1897,23 @@ enum PointErrorCode {
 	SYSTEM_ERROR = 5999,
 	SYSTEM_MAINTENANCE = 5888,
 }
-# PointException.java
+
 exception PointException {
 	1: PointErrorCode code;
 	2: string reason;
 	3: map<string, string> extra;
 }
-# PointService.java
-# PointService.java
-# PrivacyLevelType.java
+
 enum PrivacyLevelType {
 	PUBLIC = 0,
 	PRIVATE = 1,
 }
-# PrivateBotMessage.java
+
 struct PrivateBotMessage {
 	1: Message message;
 	2: string linkFrom;
 }
-# Product.java
+
 struct Product {
 	1: string productId;
 	2: i64 packageId;
@@ -2407,21 +1956,21 @@ struct Product {
 	53: bool recommendationsEnabled;
 	54: StickerResourceType stickerResourceType;
 }
-# ProductBannerLinkType.java
+
 enum ProductBannerLinkType {
 	BANNER_LINK_NONE = 0,
 	BANNER_LINK_ITEM = 1,
 	BANNER_LINK_URL = 2,
 	BANNER_LINK_CATEGORY = 3,
 }
-# ProductCategory.java
+
 struct ProductCategory {
 	1: i64 productCategoryId;
 	2: string title;
 	3: i32 productCount;
 	4: bool newFlag;
 }
-# ProductEventType.java
+
 enum ProductEventType {
 	NO_EVENT = 0,
 	CARRIER_ANY = 65537,
@@ -2431,7 +1980,7 @@ enum ProductEventType {
 	MISSION_ANY = 262145,
 	MUSTBUY_ANY = 327681,
 }
-# ProductList.java
+
 struct ProductList {
 	1: bool hasNext;
 	4: i64 bannerSequence;
@@ -2440,7 +1989,7 @@ struct ProductList {
 	7: list<Product> productList;
 	8: string bannerLang;
 }
-# ProductSimple.java
+
 struct ProductSimple {
 	1: string productId;
 	2: i64 packageId;
@@ -2451,7 +2000,7 @@ struct ProductSimple {
 	41: bool grantedByDefault;
 	42: i32 displayOrder;
 }
-# ProductSimpleList.java
+
 struct ProductSimpleList {
 	1: bool hasNext;
 	2: i32 reinvokeHour;
@@ -2460,7 +2009,7 @@ struct ProductSimpleList {
 	5: i64 recentNewReleaseDate;
 	6: i64 recentEventReleaseDate;
 }
-# Profile.java
+
 struct Profile {
 	1: string mid;
 	3: string userid;
@@ -2478,7 +2027,7 @@ struct Profile {
 	34: string musicProfile;
 	35: string videoProfile;
 }
-# ProfileAttribute.java
+
 enum ProfileAttribute {
 	ALL = 511,
 	EMAIL = 1,
@@ -2491,62 +2040,62 @@ enum ProfileAttribute {
 	BUDDY_STATUS = 128,
 	MUSIC_PROFILE = 256,
 }
-# ProximityMatchCandidateEntry.java
+
 struct ProximityMatchCandidateEntry {
 	1: Contact contact;
 	11: BuddyDetail buddyDetail;
 }
-# ProximityMatchCandidateResult.java
+
 struct ProximityMatchCandidateResult {
 	1: list<ProximityMatchCandidateEntry> users;
 	2: list<ProximityMatchCandidateEntry> buddies;
 	91: bool endOfResult;
 }
-# PublicKey.java
+
 struct PublicKey {
 	1: AsymmetricKeyAlgorithm keyAlgorithm;
 	2: i32 keySize;
 	3: binary keyData;
 	4: i64 createdTime;
 }
-# PublicKeychain.java
+
 struct PublicKeychain {
 	1: set<PublicKey> publicKeys;
 }
-# PublicKeychainStatus.java
+
 enum PublicKeychainStatus {
 	UPDATED = 0,
 	DELETED = 1,
 	RESTRICTED = 2,
 }
-# PublicType.java
+
 enum PublicType {
 	HIDDEN = 0,
 	PUBLIC = 1000,
 }
-# QueueingPolicy.java
+
 struct QueueingPolicy {
 	1: i32 priority;
 	2: string policy;
 }
-# RedirectType.java
+
 enum RedirectType {
 	NONE = 0,
 	EXPIRE_SECOND = 1,
 }
-# RegisterWithPhoneNumberResult.java
+
 struct RegisterWithPhoneNumberResult {
 	1: string authToken;
 	2: bool recommendEmailRegistration;
 	3: string certificate;
 }
-# RegisterWithSnsIdResult.java
+
 struct RegisterWithSnsIdResult {
 	1: string authToken;
 	2: bool userCreated;
 	3: bool recommendEmailRegistration;
 }
-# RegistrationType.java
+
 enum RegistrationType {
 	PHONE = 0,
 	EMAIL_WAP = 1,
@@ -2555,24 +2104,24 @@ enum RegistrationType {
 	RENREN = 2307,
 	FEIXIN = 2308,
 }
-# ReportCategory.java
+
 enum ReportCategory {
 	PUSH_NORMAL_PLAIN = 0,
 	PUSH_NORMAL_E2EE = 1,
 	PUSH_VOIP_PLAIN = 2,
 	PUSH_VOIP_E2EE = 3,
 }
-# RequestTokenResponse.java
+
 struct RequestTokenResponse {
 	1: string requestToken;
 	2: string returnUrl;
 }
-# ReservedMessageSessionId.java
+
 enum ReservedMessageSessionId {
 	DEFAULT = 0,
 	HIDDEN_CHAT = 1,
 }
-# RingbackTone.java
+
 struct RingbackTone {
 	1: string uuid;
 	2: string trackId;
@@ -2580,7 +2129,7 @@ struct RingbackTone {
 	4: string oid;
 	5: map<string, string> tids;
 }
-# Room.java
+
 struct Room {
 	1: string mid;
 	2: i64 createdTime;
@@ -2588,33 +2137,33 @@ struct Room {
 	31: bool notificationDisabled;
 	40: list<string> memberMids;
 }
-# RoomAttribute.java
+
 enum RoomAttribute {
 	ALL = 255,
 	NOTIFICATION_SETTING = 1,
 }
-# RSAKey.java
+
 struct RSAKey {
 	1: string keynm;
 	2: string nvalue;
 	3: string evalue;
 	4: string sessionKey;
 }
-# SecurityCenterResult.java
+
 struct SecurityCenterResult {
 	1: string uri;
 	2: string token;
 	3: string cookiePath;
 	4: bool skip;
 }
-# SecurityCenterSettingsType.java
+
 enum SecurityCenterSettingsType {
 	NOT_APPLICABLE = 0,
 	NOT_SET = 1,
 	SET = 2,
 	NEED_ENFORCED_INPUT = 3,
 }
-# SendBuddyMessageResult.java
+
 struct SendBuddyMessageResult {
 	1: string requestId;
 	2: BuddyResultState state;
@@ -2630,20 +2179,20 @@ struct SendBuddyMessageResult {
 	21: i64 timestamp;
 	22: string message;
 }
-# SendPostbackRequest.java
+
 struct SendPostbackRequest {
 	1: string messageId;
 	2: string url;
 	3: string chatMID;
 	4: string originMID;
 }
-# ServiceCode.java
+
 enum ServiceCode {
 	UNKNOWN = 0,
 	TALK = 1,
 	SQUARE = 2,
 }
-# SetBuddyOnAirResult.java
+
 struct SetBuddyOnAirResult {
 	1: string requestId;
 	2: BuddyResultState state;
@@ -2656,7 +2205,7 @@ struct SetBuddyOnAirResult {
 	21: i64 timestamp;
 	22: string message;
 }
-# Settings.java
+
 struct Settings {
 	10: bool notificationEnable;
 	11: i64 notificationMuteExpiration;
@@ -2699,7 +2248,7 @@ struct Settings {
 	68: bool notificationMention;
 	69: i64 botUseAgreementAcceptedAt;
 }
-# SettingsAttribute.java
+
 enum SettingsAttribute {
 	NOTIFICATION_ENABLE = 1,
 	NOTIFICATION_MUTE_EXPIRATION = 2,
@@ -2733,7 +2282,7 @@ enum SettingsAttribute {
 	ENFORCED_INPUT_ACCOUNT_MIGRATION_PINCODE = 536870912,
 	SECURITY_CENTER_SETTINGS = 262144,
 }
-# SettingsAttributeEx.java
+
 enum SettingsAttributeEx {
 	NOTIFICATION_ENABLE = 0,
 	NOTIFICATION_MUTE_EXPIRATION = 1,
@@ -2777,77 +2326,7 @@ enum SettingsAttributeEx {
 	ALLOW_UNREGISTRATION_SECONDARY_DEVICE = 41,
 	AGREEMENT_BOT_USE = 42,
 }
-# ShopService.java
-# ShopService.java
-# no success buyCoinProduct
-# ShopService.java
-# ShopService.java
-# no success buyFreeProduct
-# ShopService.java
-# ShopService.java
-# no success buyMustbuyProduct
-# ShopService.java
-# ShopService.java
-# no success checkCanReceivePresent
-# ShopService.java
-# ShopService.java
-# ShopService.java
-# ShopService.java
-# ShopService.java
-# ShopService.java
-# ShopService.java
-# ShopService.java
-# ShopService.java
-# ShopService.java
-# ShopService.java
-# ShopService.java
-# ShopService.java
-# ShopService.java
-# ShopService.java
-# ShopService.java
-# ShopService.java
-# ShopService.java
-# ShopService.java
-# ShopService.java
-# ShopService.java
-# ShopService.java
-# ShopService.java
-# ShopService.java
-# ShopService.java
-# ShopService.java
-# ShopService.java
-# ShopService.java
-# ShopService.java
-# ShopService.java
-# ShopService.java
-# ShopService.java
-# ShopService.java
-# ShopService.java
-# ShopService.java
-# ShopService.java
-# ShopService.java
-# ShopService.java
-# ShopService.java
-# ShopService.java
-# ShopService.java
-# ShopService.java
-# ShopService.java
-# ShopService.java
-# ShopService.java
-# ShopService.java
-# ShopService.java
-# ShopService.java
-# ShopService.java
-# ShopService.java
-# ShopService.java
-# ShopService.java
-# ShopService.java
-# ShopService.java
-# ShopService.java
-# ShopService.java
-# ShopService.java
-# ShopService.java
-# ShopUpdates.java
+
 struct ShopUpdates {
 	1: i64 latestNewReleaseTime;
 	2: i64 latestEventReleaseTime;
@@ -2855,26 +2334,26 @@ struct ShopUpdates {
 	11: i64 lastVersion;
 	21: list<ProductSimple> updatedProductList;
 }
-# ShouldSyncException.java
+
 exception ShouldSyncException {
 	1: i64 syncOpRevision;
 	2: SyncScope syncScope;
 	3: SyncTriggerReason syncReason;
 	4: string message;
 }
-# SIMInfo.java
+
 struct SIMInfo {
 	1: string phoneNumber;
 	2: string countryCode;
 }
-# SimpleChannelClient.java
+
 struct SimpleChannelClient {
 	1: string applicationType;
 	2: string applicationVersion;
 	3: string locale;
 	4: string mid;
 }
-# SimpleChannelContact.java
+
 struct SimpleChannelContact {
 	1: string mid;
 	2: string displayName;
@@ -2884,36 +2363,29 @@ struct SimpleChannelContact {
 	6: string userid;
 	7: string regionCode;
 }
-# SnsAdaptorService.java
-# SnsAdaptorService.java
-# SnsAdaptorService.java
-# SnsAdaptorService.java
-# SnsAdaptorService.java
-# SnsAdaptorService.java
-# no success postSnsInvitationMessage
-# SnsFriend.java
+
 struct SnsFriend {
 	1: string snsUserId;
 	2: string snsUserName;
 	3: SnsIdType snsIdType;
 }
-# SnsFriendContactRegistration.java
+
 struct SnsFriendContactRegistration {
 	1: Contact contact;
 	2: SnsIdType snsIdType;
 	3: string snsUserId;
 }
-# SnsFriendModification.java
+
 struct SnsFriendModification {
 	1: ModificationType type;
 	2: SnsFriend snsFriend;
 }
-# SnsFriends.java
+
 struct SnsFriends {
 	1: list<SnsFriend> snsFriends;
 	2: bool hasMore;
 }
-# SnsIdType.java
+
 enum SnsIdType {
 	FACEBOOK = 1,
 	SINA = 2,
@@ -2921,28 +2393,28 @@ enum SnsIdType {
 	FEIXIN = 4,
 	BBM = 5,
 }
-# SnsIdUserStatus.java
+
 struct SnsIdUserStatus {
 	1: bool userExisting;
 	2: bool phoneNumberRegistered;
 	3: bool sameDevice;
 	4: AccountMigrationCheckType accountMigrationCheckType;
 }
-# SnsProfile.java
+
 struct SnsProfile {
 	1: string snsUserId;
 	2: string snsUserName;
 	3: string email;
 	4: string thumbnailUrl;
 }
-# SpammerReason.java
+
 enum SpammerReason {
 	OTHER = 0,
 	ADVERTISING = 1,
 	GENDER_HARASSMENT = 2,
 	HARASSMENT = 3,
 }
-# SpotCategory.java
+
 enum SpotCategory {
 	UNKNOWN = 0,
 	GOURMET = 1,
@@ -2959,7 +2431,7 @@ enum SpotCategory {
 	OTHER = 12,
 	ALL = 10000,
 }
-# SpotItem.java
+
 struct SpotItem {
 	2: string name;
 	3: string phone;
@@ -2968,29 +2440,25 @@ struct SpotItem {
 	6: string countryAreaCode;
 	10: bool freePhoneCallable;
 }
-# SpotNearbyItem.java
+
 struct SpotNearbyItem {
 	2: SpotItem spotItem;
 	11: Location location;
 }
-# SpotNearbyResponse.java
+
 struct SpotNearbyResponse {
 	1: list<SpotNearbyItem> spotNearbyItems;
 }
-# SpotPhoneNumberResponse.java
+
 struct SpotPhoneNumberResponse {
 	1: list<SpotItem> spotItems;
 }
-# SpotService.java
-# SpotService.java
-# SpotService.java
-# SpotService.java
-# StickerIdRange.java
+
 struct StickerIdRange {
 	1: i64 start;
 	2: i32 size;
 }
-# StickerResourceType.java
+
 enum StickerResourceType {
 	STATIC = 1,
 	ANIMATION = 2,
@@ -2999,17 +2467,17 @@ enum StickerResourceType {
 	POPUP = 5,
 	POPUP_SOUND = 6,
 }
-# SuggestDictionary.java
+
 struct SuggestDictionary {
 	1: string language;
 	2: string name;
 }
-# SuggestDictionaryIncrements.java
+
 struct SuggestDictionaryIncrements {
 	1: SuggestItemDictionaryIncrement itemIncrement;
 	2: list<SuggestTagDictionaryIncrement> tagIncrements;
 }
-# SuggestDictionaryIncrementStatus.java
+
 enum SuggestDictionaryIncrementStatus {
 	SUCCESS = 0,
 	INVALID_REVISION = 1,
@@ -3019,31 +2487,31 @@ enum SuggestDictionaryIncrementStatus {
 	FAIL = 5,
 	TOO_OLD_DATA = 6,
 }
-# SuggestDictionaryRevisions.java
+
 struct SuggestDictionaryRevisions {
 	1: SuggestItemDictionaryRevision itemRevision;
 	2: list<SuggestTagDictionaryRevision> tagRevisions;
 }
-# SuggestDictionarySettings.java
+
 struct SuggestDictionarySettings {
 	1: i64 revision;
 	2: i64 newRevision;
 	3: list<SuggestDictionary> dictionaries;
 	4: list<string> preloadedDictionaries;
 }
-# SuggestItemDictionaryIncrement.java
+
 struct SuggestItemDictionaryIncrement {
 	1: SuggestDictionaryIncrementStatus status;
 	2: i64 revision;
 	3: string scheme;
 	4: binary data;
 }
-# SuggestItemDictionaryRevision.java
+
 struct SuggestItemDictionaryRevision {
 	1: i64 revision;
 	2: string scheme;
 }
-# SuggestTagDictionaryIncrement.java
+
 struct SuggestTagDictionaryIncrement {
 	1: SuggestDictionaryIncrementStatus status;
 	2: string language;
@@ -3051,18 +2519,18 @@ struct SuggestTagDictionaryIncrement {
 	4: string scheme;
 	5: binary data;
 }
-# SuggestTagDictionaryRevision.java
+
 struct SuggestTagDictionaryRevision {
 	1: string language;
 	2: i64 revision;
 	3: string scheme;
 }
-# SyncActionType.java
+
 enum SyncActionType {
 	SYNC = 0,
 	REPORT = 1,
 }
-# SyncCategory.java
+
 enum SyncCategory {
 	PROFILE = 0,
 	SETTINGS = 1,
@@ -3075,24 +2543,24 @@ enum SyncCategory {
 	NOTIFICATION = 8,
 	ADDRESS_BOOK = 9,
 }
-# SyncParamContact.java
+
 struct SyncParamContact {
 	1: SyncParamMid syncParamMid;
 	2: ContactStatus contactStatus;
 }
-# SyncParamMid.java
+
 struct SyncParamMid {
 	1: string mid;
 	2: Diff diff;
 	3: i64 revision;
 }
-# SyncRelations.java
+
 struct SyncRelations {
 	1: bool syncAll;
 	2: list<SyncParamContact> syncParamContact;
 	3: list<SyncParamMid> syncParamMid;
 }
-# SyncScope.java
+
 struct SyncScope {
 	1: bool syncProfile;
 	2: bool syncSettings;
@@ -3103,13 +2571,13 @@ struct SyncScope {
 	12: SyncRelations room;
 	13: SyncRelations chat;
 }
-# SyncTriggerReason.java
+
 enum SyncTriggerReason {
 	OTHER = 0,
 	REVISION_GAP_TOO_LARGE = 1,
 	OPERATION_EXPIRED = 2,
 }
-# SystemConfiguration.java
+
 struct SystemConfiguration {
 	1: string endpoint;
 	2: string endpointSsl;
@@ -3117,663 +2585,25 @@ struct SystemConfiguration {
 	11: string c2dmAccount;
 	12: string nniServer;
 }
-# TalkException.java
+
 exception TalkException {
 	1: ErrorCode code;
 	2: string reason;
 	3: map<string, string> parameterMap;
 }
-# TalkService.java
-# TalkService.java
-# no success acceptGroupInvitationByTicket
-# TalkService.java
-# TalkService.java
-# no success acceptGroupInvitation
-# TalkService.java
-# TalkService.java
-# no success acceptProximityMatches
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# no success blockContact
-# TalkService.java
-# TalkService.java
-# no success blockRecommendation
-# TalkService.java
-# TalkService.java
-# no success cancelGroupInvitation
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# no success clearIdentityCredential
-# TalkService.java
-# TalkService.java
-# no success clearMessageBox
-# TalkService.java
-# TalkService.java
-# no success clearRingbackTone
-# TalkService.java
-# TalkService.java
-# no success closeProximityMatch
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# no success destroyMessage
-# TalkService.java
-# TalkService.java
-# no success disableNearby
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# no success finishUpdateVerification
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# no success invalidateUserTicket
-# TalkService.java
-# TalkService.java
-# no success inviteFriendsBySms
-# TalkService.java
-# TalkService.java
-# no success inviteIntoGroup
-# TalkService.java
-# TalkService.java
-# no success inviteIntoRoom
-# TalkService.java
-# TalkService.java
-# no success inviteViaEmail
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# no success kickoutFromGroup
-# TalkService.java
-# TalkService.java
-# no success leaveGroup
-# TalkService.java
-# TalkService.java
-# no success leaveRoom
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# no success logoutSession
-# TalkService.java
-# TalkService.java
-# no success logout
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# no success noop
-# TalkService.java
-# TalkService.java
-# no success notifiedRedirect
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# no success notifyIndividualEvent
-# TalkService.java
-# TalkService.java
-# no success notifyInstalled
-# no error notifyInstalled
-# TalkService.java
-# TalkService.java
-# no success notifyRegistrationComplete
-# TalkService.java
-# TalkService.java
-# no success notifySleepV2
-# TalkService.java
-# TalkService.java
-# no success notifySleep
-# TalkService.java
-# TalkService.java
-# no success notifyUpdatePublicKeychain
-# TalkService.java
-# TalkService.java
-# no success notifyUpdated
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# no success registerBuddyUserid
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# no success rejectGroupInvitation
-# TalkService.java
-# TalkService.java
-# no success releaseSession
-# TalkService.java
-# TalkService.java
-# no success removeAllMessages
-# TalkService.java
-# TalkService.java
-# no success removeBuddyLocation
-# TalkService.java
-# TalkService.java
-# no success removeBuddySubscriptionAndNotifyBuddyUnregistered
-# TalkService.java
-# TalkService.java
-# no success removeE2EEPublicKey
-# TalkService.java
-# TalkService.java
-# no success removeFriendRequest
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# no success reportClientStatistics
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# no success reportDeviceState
-# TalkService.java
-# TalkService.java
-# no success reportGroups
-# TalkService.java
-# TalkService.java
-# no success reportProfile
-# TalkService.java
-# TalkService.java
-# no success reportRooms
-# TalkService.java
-# TalkService.java
-# no success reportSettings
-# TalkService.java
-# TalkService.java
-# no success reportSpam
-# TalkService.java
-# TalkService.java
-# no success reportSpammer
-# TalkService.java
-# TalkService.java
-# no success report
-# TalkService.java
-# TalkService.java
-# no success requestAccountPasswordReset
-# TalkService.java
-# TalkService.java
-# no success requestE2EEKeyExchange
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# no success requestIdentityUnbind
-# TalkService.java
-# TalkService.java
-# no success requestResendMessage
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# no success resendPinCodeBySMS
-# TalkService.java
-# TalkService.java
-# no success resendPinCode
-# TalkService.java
-# TalkService.java
-# no success respondE2EEKeyExchange
-# TalkService.java
-# TalkService.java
-# no success respondResendMessage
-# TalkService.java
-# TalkService.java
-# no success sendChatChecked
-# TalkService.java
-# TalkService.java
-# no success sendChatRemoved
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# no success sendContentReceipt
-# TalkService.java
-# TalkService.java
-# no success sendDummyPush
-# TalkService.java
-# TalkService.java
-# no success sendEchoPush
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# no success sendMessageIgnored
-# TalkService.java
-# TalkService.java
-# no success sendMessageReceipt
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# no success sendPostback
-# TalkService.java
-# TalkService.java
-# no success setBuddyLocation
-# TalkService.java
-# TalkService.java
-# no success setIdentityCredential
-# TalkService.java
-# TalkService.java
-# no success setNotificationsEnabled
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# no success storeUpdateProfileAttribute
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# no success tryFriendRequest
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# no success unblockContact
-# TalkService.java
-# TalkService.java
-# no success unblockRecommendation
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# no success updateAccountMigrationPincode
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# no success updateApnsDeviceToken
-# TalkService.java
-# TalkService.java
-# no success updateBuddySetting
-# TalkService.java
-# TalkService.java
-# no success updateC2DMRegistrationId
-# TalkService.java
-# TalkService.java
-# no success updateContactSetting
-# TalkService.java
-# TalkService.java
-# no success updateCustomModeSettings
-# TalkService.java
-# TalkService.java
-# no success updateDeviceInfo
-# TalkService.java
-# TalkService.java
-# no success updateExtendedProfileAttribute
-# TalkService.java
-# TalkService.java
-# no success updateGroupPreferenceAttribute
-# TalkService.java
-# TalkService.java
-# no success updateGroup
-# TalkService.java
-# TalkService.java
-# no success updateNotificationTokenWithBytes
-# TalkService.java
-# TalkService.java
-# no success updateNotificationToken
-# TalkService.java
-# TalkService.java
-# no success updateProfileAttribute
-# TalkService.java
-# TalkService.java
-# no success updateProfile
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# no success updateRegion
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# no success updateSettingsAttribute
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# no success updateSettings
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# no success verifyAccountMigrationPincode
-# TalkService.java
-# TalkService.java
-# no success verifyAccountMigration
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# no success verifyIdentityCredential
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
-# TalkService.java
+
 	# Error? TalkServiceClientFactory.java
 	# Error? TalkServiceClientUtil.java
 	# Error? TBinaryTalkProtocol.java
 	# Error? TCompactTalkProtocol.java
-# Ticket.java
+
 struct Ticket {
 	1: string id;
 	10: i64 expirationTime;
 	21: i32 maxUseCount;
 }
 	# Error? TJSONTalkProtocol.java
-# TMessageBox.java
+
 struct TMessageBox {
 	1: string id;
 	2: string channelId;
@@ -3784,40 +2614,40 @@ struct TMessageBox {
 	9: MIDType midType;
 	10: list<Message> lastMessages;
 }
-# TMessageBoxStatus.java
+
 enum TMessageBoxStatus {
 	ACTIVATED = 1,
 	UNREAD = 2,
 }
-# TMessageBoxWrapUp.java
+
 struct TMessageBoxWrapUp {
 	1: TMessageBox messageBox;
 	2: string name;
 	3: list<Contact> contacts;
 	4: string pictureRevision;
 }
-# TMessageBoxWrapUpResponse.java
+
 struct TMessageBoxWrapUpResponse {
 	1: list<TMessageBoxWrapUp> messageBoxWrapUpList;
 	2: i32 totalSize;
 }
-# TMessageReadRange.java
+
 struct TMessageReadRange {
 	1: string chatId;
 	2: map<string, list<TMessageReadRangeEntry>> ranges;
 }
-# TMessageReadRangeEntry.java
+
 struct TMessageReadRangeEntry {
 	1: i64 startMessageId;
 	2: i64 endMessageId;
 	3: i64 startTime;
 	4: i64 endTime;
 }
-# TrackingType.java
+
 enum TrackingType {
 	# Error? TrackingType.java
 }
-# UnregisterBuddyResult.java
+
 struct UnregisterBuddyResult {
 	1: string requestId;
 	2: BuddyResultState state;
@@ -3827,12 +2657,12 @@ struct UnregisterBuddyResult {
 	6: i64 subscriberCountToRemove;
 	7: i64 subscriberCountRemoved;
 }
-# UnregistrationReason.java
+
 enum UnregistrationReason {
 	UNREGISTRATION_REASON_UNREGISTER_USER = 1,
 	UNREGISTRATION_REASON_UNBIND_DEVICE = 2,
 }
-# UpdateBuddyProfileResult.java
+
 struct UpdateBuddyProfileResult {
 	1: string requestId;
 	2: BuddyResultState state;
@@ -3846,30 +2676,30 @@ struct UpdateBuddyProfileResult {
 	22: string message;
 	23: string urlhash;
 }
-# UserAgeType.java
+
 enum UserAgeType {
 	OVER = 1,
 	UNDER = 2,
 	UNDEFINED = 3,
 }
-# UserAuthStatus.java
+
 struct UserAuthStatus {
 	1: bool phoneNumberRegistered;
 	2: list<SnsIdType> registeredSnsIdTypes;
 	3: AccountMigrationCheckType accountMigrationCheckType;
 }
-# UserStatus.java
+
 enum UserStatus {
 	NORMAL = 0,
 	UNBOUND = 1,
 	UNREGISTERED = 2,
 }
-# UserTicketResponse.java
+
 struct UserTicketResponse {
 	1: string mid;
 	2: string userTicket;
 }
-# ValidateContactsResult.java
+
 struct ValidateContactsResult {
 	11: i64 receiverCount;
 	12: i64 successCount;
@@ -3878,7 +2708,7 @@ struct ValidateContactsResult {
 	15: i64 unrelatedCount;
 	16: i64 failCount;
 }
-# VerificationMethod.java
+
 enum VerificationMethod {
 	NO_AVAILABLE = 0,
 	PIN_VIA_SMS = 1,
@@ -3886,14 +2716,14 @@ enum VerificationMethod {
 	PIN_VIA_TTS = 4,
 	SKIP = 10,
 }
-# VerificationResult.java
+
 enum VerificationResult {
 	FAILED = 0,
 	OK_NOT_REGISTERED_YET = 1,
 	OK_REGISTERED_WITH_SAME_DEVICE = 2,
 	OK_REGISTERED_WITH_ANOTHER_DEVICE = 3,
 }
-# VerificationSessionData.java
+
 struct VerificationSessionData {
 	1: string sessionId;
 	2: VerificationMethod method;
@@ -3904,14 +2734,14 @@ struct VerificationSessionData {
 	7: list<VerificationMethod> availableVerificationMethods;
 	8: string callerIdMask;
 }
-# WapInvitation.java
+
 struct WapInvitation {
 	1: WapInvitationType type;
 	10: string inviteeEmail;
 	11: string inviterMid;
 	12: string roomMid;
 }
-# WapInvitationType.java
+
 enum WapInvitationType {
 	REGISTRATION = 1,
 	CHAT = 2,
