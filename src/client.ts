@@ -76,9 +76,17 @@ export default class {
             case LineTypes.OpType.NOTIFIED_UPDATE_PROFILE:
                 const contact = await this.normalClient.getContact(op.param1);
                 await User.addContact(this.account.mid, contact);
+                console.log('Profile updated', contact.mid);
+                break;
             case LineTypes.OpType.UPDATE_PROFILE:
                 const profile = await this.normalClient.getProfile();
                 await User.addProfile(profile);
+                break;
+            case LineTypes.OpType.NOTIFIED_E2EE_KEY_UPDATE:
+                // TODO
+                break;
+            case LineTypes.OpType.NOTIFIED_READ_MESSAGE:
+                break;
         }
         if (op.revision > this.lastOpNum)
             this.lastOpNum = op.revision;
