@@ -1,102 +1,91 @@
 {
-    "jsRules": {
-        "class-name": true,
-        "comment-format": [
-            true,
-            "check-space"
-        ],
-        "indent": [
-            true,
-            "spaces"
-        ],
-        "no-duplicate-variable": true,
-        "no-eval": true,
-        "no-trailing-whitespace": true,
-        "no-unsafe-finally": true,
-        "one-line": [
-            true,
-            "check-open-brace",
-            "check-whitespace"
-        ],
-        "quotemark": [
-            true,
-            "double"
-        ],
-        "semicolon": [
-            true,
-            "always"
-        ],
-        "triple-equals": [
-            true,
-            "allow-null-check"
-        ],
-        "variable-name": [
-            true,
-            "ban-keywords"
-        ],
-        "whitespace": [
-            true,
-            "check-branch",
-            "check-decl",
-            "check-operator",
-            "check-separator",
-            "check-type"
-        ]
-    },
     "rules": {
-        "class-name": true,
-        "comment-format": [
+        "array-type": [
             true,
-            "check-space"
+            "array-simple"
         ],
-        "indent": [
-            true,
-            "spaces"
-        ],
-        "no-eval": true,
-        "no-internal-module": true,
-        "no-trailing-whitespace": true,
-        "no-unsafe-finally": true,
-        "no-var-keyword": true,
-        "no-unused-variable": true,
-        "one-line": [
-            true,
-            "check-open-brace",
-            "check-whitespace"
-        ],
-        "quotemark": [
-            true,
-            "single"
-        ],
-        "semicolon": [
-            true,
-            "always"
-        ],
-        "triple-equals": [
-            true,
-            "allow-null-check"
-        ],
-        "typedef-whitespace": [
+        "arrow-return-shorthand": true,
+        "ban": [
             true,
             {
-                "call-signature": "nospace",
-                "index-signature": "nospace",
-                "parameter": "nospace",
-                "property-declaration": "nospace",
-                "variable-declaration": "nospace"
+                "name": "parseInt",
+                "message": "tsstyle#type-coercion"
+            },
+            {
+                "name": "parseFloat",
+                "message": "tsstyle#type-coercion"
+            },
+            {
+                "name": "Array",
+                "message": "tsstyle#array-constructor"
             }
         ],
-        "variable-name": [
+        "ban-types": [
             true,
-            "ban-keywords"
+            [
+                "Object",
+                "Use {} instead."
+            ],
+            [
+                "String",
+                "Use 'string' instead."
+            ],
+            [
+                "Number",
+                "Use 'number' instead."
+            ],
+            [
+                "Boolean",
+                "Use 'boolean' instead."
+            ]
         ],
-        "whitespace": [
+        "class-name": true,
+        "forin": true,
+        "interface-name": [
             true,
-            "check-branch",
-            "check-decl",
-            "check-operator",
-            "check-separator",
-            "check-type"
-        ]
+            "never-prefix"
+        ],
+        "jsdoc-format": true,
+        "label-position": true,
+        "member-access": [
+            true,
+            "no-public"
+        ],
+        "new-parens": true,
+        "no-angle-bracket-type-assertion": true,
+        "no-any": true,
+        "no-arg": true,
+        "no-conditional-assignment": true,
+        "no-construct": true,
+        "no-debugger": true,
+        "no-duplicate-variable": true,
+        "no-inferrable-types": true,
+        "no-namespace": [
+            true,
+            "allow-declarations"
+        ],
+        "no-reference": true,
+        "no-string-throw": true,
+        "no-unused-expression": true,
+        "no-var-keyword": true,
+        "object-literal-shorthand": true,
+        "only-arrow-functions": [
+            true,
+            "allow-declarations",
+            "allow-named-functions"
+        ],
+        "prefer-const": true,
+        "radix": true,
+        "semicolon": [
+            true,
+            "always",
+            "ignore-bound-class-methods"
+        ],
+        "switch-default": true,
+        "triple-equals": [
+            true,
+            "allow-null-check"
+        ],
+        "use-isnan": true
     }
 }
