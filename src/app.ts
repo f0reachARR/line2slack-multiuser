@@ -1,4 +1,5 @@
 import * as TalkService from './thrift/TalkService';
+import * as AuthService from './thrift/AuthService';
 import * as LineTypes from './thrift/talk_types';
 import { MemoryDataStore, RtmClient, WebClient } from '@slack/client';
 import { imageSync as createQrCode } from 'qr-image';
@@ -7,6 +8,7 @@ import * as thrift from 'thrift';
 import Config, {
     LINE_APP,
     LINE_UNAUTH_ENDPOINT,
+    LINE_NORMAL_ENDPOINT,
     LINE_AUTH_ENDPOINT,
     LINE_POLL_ENDPOINT,
     LINE_SYSTEM_NAME,
@@ -17,11 +19,12 @@ import { createThrift } from './utils/thrift';
 import { uploadFile } from './utils/slack';
 import * as e2ee from './e2ee';
 import * as request from 'request';
-import db, { Account, E2eeKey, User, AccountInstance, UserInstance } from './db';
+import db, { LineAccount, E2eeKey, User, LineAccountInstance, UserInstance } from './db';
 import Client from './client';
 
 const slackRtm = new RtmClient(Config.slack.token, {
-    dataStore: new MemoryDataStore(),
+    useRtmConnect: true,
+    dataStore: false,
     autoReconnect: true
 });
 const slackApi = new WebClient(Config.slack.token);
@@ -36,11 +39,13 @@ const clients: { [mid: string]: Client } = {};
         if (message.channel.startsWith('D')) { // is DM?
             if (message.text === 'login') {
                 console.log('Login session started');
-                const loginConn = createThrift<TalkService.Client>(LINE_UNAUTH_ENDPOINT, TalkService);
+                const qrConn = createThrift<TalkService.Client>(LINE_UNAUTH_ENDPOINT, TalkService);
                 const keyForEx = e2ee.generateKeyPair();
-                const qrLoginInfo = await loginConn.getAuthQrcode(true, LINE_SYSTEM_NAME, true).catch(() => sendError('Failed to getAuthQrcode'));
+                const qrLoginInfo = await qrConn.getAuthQrcode(true, LINE_SYSTEM_NAME, true).catch(() => sendError('Failed to getAuthQrcode'));
                 if (!qrLoginInfo) return;
-                const qrImage = createQrCode(`${qrLoginInfo.callbackUrl}?${e2ee.generateE2eeQrParam(keyForEx)}`, { type: 'png' }) as Buffer;
+                const codeUrl = `${qrLoginInfo.callbackUrl}?${e2ee.generateE2eeQrParam(keyForEx)}`;
+                const qrImage = createQrCode(codeUrl, { type: 'png' }) as Buffer;
+                // tslint:disable-next-line:no-any
                 const qrFileInfo: any = await uploadFile(Config.slack.token, qrImage, [message.channel], 'image/png', 'qrcode.png').catch(() => sendError('Failed to upload QRCODE'));
                 if (!qrFileInfo || !('file' in qrFileInfo) || !('id' in qrFileInfo.file)) {
                     await sendError('Failed to upload QRCODE');
@@ -63,15 +68,24 @@ const clients: { [mid: string]: Client } = {};
                     // E2EE鍵復号
                     const meta = body.result.metadata;
                     // ログイン
+                    const loginConn = createThrift<AuthService.Client>(LINE_AUTH_ENDPOINT, AuthService);
                     const chain = e2ee.decryptKeychain(keyForEx, meta.encryptedKeyChain, meta.publicKey, meta.hashKeyChain);
-                    const loginResult = await loginConn.loginWithVerifierForCertificate(body.result.verifier).catch(() => sendError('Failed to login'));
+                    const loginReq = new LineTypes.LoginRequest({
+                        keepLoggedIn: false,
+                        verifier: body.result.verifier,
+                        systemName: LINE_SYSTEM_NAME,
+                        identityProvider: LineTypes.IdentityProvider.LINE,
+                        type: LineTypes.LoginType.QRCODE,
+                        accessLocation: ''
+                    });
+                    const loginResult = await loginConn.loginZ(loginReq).catch(() => sendError('Failed to login'));
                     if (!loginResult || !loginResult.authToken) {
                         await sendError('Failed to login');
                         return;
                     }
 
                     // profile取得
-                    const userConn = createThrift<TalkService.Client>(LINE_AUTH_ENDPOINT, TalkService, { headers: { 'X-Line-Access': loginResult.authToken } });
+                    const userConn = createThrift<TalkService.Client>(LINE_NORMAL_ENDPOINT, TalkService, { headers: { 'X-Line-Access': loginResult.authToken } });
                     const profile = await userConn.getProfile().catch(() => sendError('Failed to get profile'));
                     if (!profile || !profile.mid) {
                         await sendError('Failed to get profile');
@@ -81,26 +95,27 @@ const clients: { [mid: string]: Client } = {};
                     console.log('logged in', 'mid', profile.mid);
 
                     // MIDがすでにあるか(チャンネルをこの後作成するためupsertしない)
-                    let accountEntry = await Account.find({ where: { mid: profile.mid } }).catch(() => sendError('Failed to check data'));
+                    let accountEntry = await LineAccount.find({ where: { mid: profile.mid } }).catch(() => sendError('Failed to check data'));
                     if (accountEntry) {
                         console.log('Account already created');
                         accountEntry.token = loginResult.authToken;
                         await accountEntry.save().catch(() => sendError('Failed to save'));
                     } else {
-                        accountEntry = await Account.create({ mid: profile.mid, token: loginResult.authToken }).catch(() => sendError('Failed to create'));
+                        accountEntry = await LineAccount.create({ mid: profile.mid, token: loginResult.authToken }).catch(() => sendError('Failed to create'));
                         console.log('Account created');
                     }
 
                     // E2EE鍵->DB(upsert)
-                    await chain.map(key => ({
-                        keyId: key.keyId,
-                        privateKey: Buffer.from(key.privateKey).toString('base64'),
-                        publicKey: Buffer.from(key.publicKey).toString('base64'),
-                        mid: profile.mid
-                    })).reduce((prev: Promise<any>, curr) => {
-                        return prev.then(() => E2eeKey.upsert(curr, { fields: ['privateKey', 'publicKey'] }))
-                            .then(isCreated => console.log(curr.keyId, isCreated ? 'Key added' : 'Key updated'));
-                    }, Promise.resolve()).catch(() => sendError('Failed to add key'));
+                    for (const key of chain) {
+                        const keyItem = {
+                            keyId: key.keyId,
+                            privateKey: Buffer.from(key.privateKey).toString('base64'),
+                            publicKey: Buffer.from(key.publicKey).toString('base64'),
+                            mid: profile.mid
+                        };
+                        const isCreated = await E2eeKey.upsert(keyItem, { fields: ['privateKey', 'publicKey'] }).catch(() => sendError('Failed to add key'));
+                        console.log(keyItem.keyId, isCreated ? 'Key added' : 'Key updated');
+                    }
 
                     // チャンネル確認+作成
                     if (accountEntry.channel && accountEntry.channel.length !== 0) {
@@ -129,7 +144,9 @@ const clients: { [mid: string]: Client } = {};
                     if (!contacts) return;
 
                     // 友だちリスト格納
-                    await contacts.reduce((prev: Promise<any>, curr) => prev.then(() => User.addContact(profile.mid, curr).catch(() => sendError('Failed to store contacts'))), Promise.resolve());
+                    for (const contact of contacts) {
+                        await User.addContact(profile.mid, contact).catch(() => sendError('Failed to store contacts'));
+                    }
                     console.log('Contacts stored');
 
                     if (clients[profile.mid]) {
@@ -139,7 +156,7 @@ const clients: { [mid: string]: Client } = {};
                     clients[profile.mid].startPolling();
                 });
             } else if (message.text === 'list') {
-                const accounts = await Account.findAll();
+                const accounts = await LineAccount.findAll();
 
             }
         }
@@ -152,11 +169,11 @@ const clients: { [mid: string]: Client } = {};
     await promisize<void>(slackRtm, 'open');
     console.log('Slack: open');
 
-    const accounts = await Account.findAll();
-    accounts.forEach(account => {
+    const accounts = await LineAccount.findAll();
+    for (const account of accounts) {
         clients[account.mid] = new Client(account, slackRtm, slackApi, sendError);
         clients[account.mid].startPolling();
-    });
+    }
 })();
 
 async function sendError(msg: string, channel?: string): Promise<never> {

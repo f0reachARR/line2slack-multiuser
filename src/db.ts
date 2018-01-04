@@ -5,7 +5,7 @@ import * as Bluebird from 'bluebird';
 
 const conn = new Sequelize('line2slack', '', '', { dialect: 'sqlite', storage: Config.db, logging: false });
 
-interface AccountAttributes {
+interface LineAccountAttributes {
     id?: number;
     mid: string;
     token: string;
@@ -14,9 +14,9 @@ interface AccountAttributes {
     updatedAt?: Date;
 }
 
-export interface AccountInstance extends Sequelize.Instance<AccountAttributes>, AccountAttributes { }
+export interface LineAccountInstance extends Sequelize.Instance<LineAccountAttributes>, LineAccountAttributes { }
 
-export const Account = conn.define<AccountInstance, AccountAttributes>('account', {
+export const LineAccount = conn.define<LineAccountInstance, LineAccountAttributes>('account', {
     mid: {
         type: Sequelize.STRING,
         allowNull: false
@@ -58,7 +58,7 @@ export const E2eeKey = conn.define<E2eeKeyInstance, E2eeKeyAttributes>('e2eekey'
         type: Sequelize.BIGINT,
         allowNull: false
     },
-    publicKey: {
+    publicKey: { // groupの時はsharedKeyを入れる
         type: Sequelize.STRING,
         allowNull: false
     },
