@@ -322,6 +322,7 @@ declare module '@slack/client' {
                 maxRequestConcurrency?: number,
                 logLevel?: string,
                 logger?: any,
+                useRtmConnect: boolean
             }
         );
     }

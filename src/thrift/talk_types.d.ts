@@ -1796,7 +1796,7 @@ export class E2EEGroupSharedKey {
     creatorKeyId: number;
     receiver: string;
     receiverKeyId: number;
-    encryptedSharedKey: string;
+    encryptedSharedKey: Buffer;
     allowedTypes: ContentType[];
 
     constructor(args?: { version: number; groupKeyId: number; creator: string; creatorKeyId: number; receiver: string; receiverKeyId: number; encryptedSharedKey: string; allowedTypes: ContentType[]; });
@@ -1805,8 +1805,8 @@ export class E2EEGroupSharedKey {
 export class E2EEKey {
     version: number;
     keyId: number;
-    publicKey: string;
-    privateKey: string;
+    publicKey: Buffer;
+    privateKey: Buffer;
     createdTime: number;
 
     constructor(args?: { version: number; keyId: number; publicKey: string; privateKey: string; createdTime: number; });
@@ -2060,7 +2060,19 @@ export class LoginRequest {
     secret: string;
     e2eeVersion: number;
 
-    constructor(args?: { type: LoginType; identityProvider: IdentityProvider; identifier: string; password: string; keepLoggedIn: boolean; accessLocation: string; systemName: string; certificate: string; verifier: string; secret: string; e2eeVersion: number; });
+    constructor(args?: {
+        type?: LoginType;
+        identityProvider?: IdentityProvider;
+        identifier?: string;
+        password?: string;
+        keepLoggedIn?: boolean;
+        accessLocation?: string;
+        systemName?: string;
+        certificate?: string;
+        verifier?: string;
+        secret?: string;
+        e2eeVersion?: number;
+    });
 }
 
 export class LoginResult {
