@@ -1,19 +1,20 @@
 import * as request from 'request';
 
 export function uploadFile(token: string, buf: Buffer, channels?: string[], contentType = 'text/plain', fileName = 'file.txt') {
+    // tslint:disable-next-line:no-any
     return new Promise<any>((resolve, reject) => request.post(`https://slack.com/api/files.upload`, {
         formData: {
-            token: token,
+            token,
             file: {
                 value: buf,
                 options: {
                     filename: fileName,
-                    contentType: contentType
+                    contentType
                 }
             },
             filetype: 'auto',
             title: fileName,
-            channels: channels
+            channels
         },
         json: true
     }, (err, res, body) => {
