@@ -153,19 +153,22 @@ export default class {
 
         const contact = await this.getUserContact(msg.from_);
         slackMessage.username = this.getDisplayName(contact);
-        slackMessage.icon_url = `http://obs.line-cdn.net${contact.picture}/preview`;
-        // 送り先種別で
-        switch (msg.toType) {
-            case LineTypes.MIDType.GROUP:
-                if (!slackThreadInfo) {
-                    const group = await this.normalClient.getGroup(msg.to);
-                    slackMessage.attachments.push({
+        if (contact.picture)
+            slackMessage.icon_url = `http://obs.line-cdn.net${contact.picture}/preview`;
+        if(msg.toType === LineTypes.MIDType.GROUP && !slackThreadInfo){
+            const group = await this.normalClient.getGroup(msg.to);
+            // Threadを始める
+            const threadInfo = await this.webClient.chat.postMessage(this.account.channel, '', {
+                attachments: [
+                    {
                         fallback: `グループ: ${group.name}`,
                         title: `グループ: ${group.name}`
-                    });
-                }
-                break;
-            default:
+                    }
+                ],
+                username: group.name,
+                icon_url: `http://obs.line-cdn.net${group.picturePath}/preview`
+            });
+            slackMessage.thread_ts = threadInfo.ts;
         }
 
         // ContentTypeで
@@ -291,7 +294,7 @@ export default class {
                 lastMsgId: msg.id,
                 lastMsgTs: slackResult.ts
             }, { fields: ['isRead', 'isReadReacted', 'lastMsgId', 'lastMsgTs'] });
-            await this.normalClient.sendMessageReceipt(0, msg.to, [msg.id]);
+            // await this.normalClient.sendMessageReceipt(0, msg.to, [msg.id]);
         } else {
             return Promise.reject(slackResult.error);
         }
