@@ -87,6 +87,30 @@ export default class {
             conversation.isRead = true;
             conversation.lastMsgTs = msg.ts;
             await conversation.save();
+        } else if (msg.text.match(/^start (u\w+)$/)) {
+            const match = msg.text.match(/^start (u\w+)$/);
+            if (!match) return;
+            const mid = match[1];
+            const midInfo = await this.normalClient.getContact(mid);
+            await User.addContact(this.account.mid, midInfo);
+            const conversation = await SlackMessage.find({ where: { mid, channel: this.account.channel } });
+            if (!conversation) {
+                const threadPost = await this.webClient.chat.postMessage(this.account.channel, `Start with ${mid} (${midInfo.displayName})`);
+                await SlackMessage.upsert({
+                    channel: this.account.channel,
+                    mid,
+                    threadTs: threadPost.ts,
+                    isRead: false,
+                    isReadReacted: false,
+                    lastMsgId: '',
+                    lastMsgTs: threadPost.ts
+                }, { fields: ['isRead', 'isReadReacted', 'lastMsgId', 'lastMsgTs'] });
+            }
+        } else if (msg.text.match(/^add (u\w+)$/)) {
+            const match = msg.text.match(/^add (u\w+)$/);
+            if (!match) return;
+            const mid = match[1];
+            await this.normalClient.findAndAddContactsByMid(0, mid, LineTypes.ContactType.MID, '');
         }
     }
     private async processOperation(op: LineTypes.Operation) {
@@ -155,7 +179,7 @@ export default class {
         slackMessage.username = this.getDisplayName(contact);
         if (contact.picture)
             slackMessage.icon_url = `http://obs.line-cdn.net${contact.picture}/preview`;
-        if(msg.toType === LineTypes.MIDType.GROUP && !slackThreadInfo){
+        if (msg.toType === LineTypes.MIDType.GROUP && !slackThreadInfo) {
             const group = await this.normalClient.getGroup(msg.to);
             // Threadを始める
             const threadInfo = await this.webClient.chat.postMessage(this.account.channel, '', {
