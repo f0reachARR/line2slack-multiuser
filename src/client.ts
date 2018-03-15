@@ -387,11 +387,13 @@ export default class {
         let targetKeyEntry = await E2eeKey.find({ where: { mid: msg.to }, order: [['keyId', 'DESC']] });
         if (!targetKeyEntry) {
             const receiverKeyInfo = await this.normalClient.negotiateE2EEPublicKey(msg.to);
-            targetKeyEntry = await E2eeKey.create({
-                mid: msg.to,
-                publicKey: receiverKeyInfo.publicKey.keyData.toString('base64'),
-                keyId: receiverKeyInfo.publicKey.keyId
-            });
+            if (receiverKeyInfo.publicKey && receiverKeyInfo.publicKey.keyData)
+                targetKeyEntry = await E2eeKey.create({
+                    mid: msg.to,
+                    publicKey: receiverKeyInfo.publicKey.keyData.toString('base64'),
+                    keyId: receiverKeyInfo.publicKey.keyId
+                });
+            else return;
         }
         e2ee.encryptMessage(msg, {
             keyId: selfKeyEntry.keyId,
