@@ -340,7 +340,7 @@ export default class {
             let groupSharedKeyEntry = await E2eeKey.find({ where: { mid: msg.to, keyId: receiverKeyId } });
             if (!groupSharedKeyEntry) { // GroupSharedKeyを取得してくる
                 const groupKey = await this.normalClient.getE2EEGroupSharedKey(1, msg.to, receiverKeyId);
-                if (!groupKey || groupKey.groupKeyId !== receiverKeyId || groupKey.receiver !== this.account.mid) // 受取MIDが違う時など
+                if (!groupKey || !groupKey.encryptedSharedKey || groupKey.groupKeyId !== receiverKeyId || groupKey.receiver !== this.account.mid) // 受取MIDが違う時など
                     return Promise.reject('Returned invalid group key');
                 const selfKeyEntry = await this.getE2EEKey(this.account.mid, groupKey.receiverKeyId);
                 if (!selfKeyEntry.privateKey) {
@@ -412,7 +412,7 @@ export default class {
                 return Promise.reject('Cannot fetch self key');
 
             const keyInfo = await this.normalClient.getE2EEPublicKey(mid, E2EE_VERSION, keyId);
-            if (!keyInfo)
+            if (!keyInfo || !keyInfo.keyData)
                 return Promise.reject('Failed to get E2EEPublicKey');
 
             keyEntry = await E2eeKey.create({
