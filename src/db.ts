@@ -127,7 +127,7 @@ User.addContact = (selfMid: string, contact: LineTypes.Contact) => {
         customName: contact.displayNameOverridden,
         statusMessage: contact.statusMessage,
         picture: contact.picturePath
-    }, { fields: ['name', 'statusMessage', 'picture', 'customName'] }).then(() => {
+    }, { fields: ['name', 'statusMessage', 'picture', 'customName'], returning: false }).then(() => {
         return User.find({ where: { selfMid, mid: contact.mid } });
     });
 };
@@ -140,7 +140,7 @@ User.addProfile = (profile: LineTypes.Profile) => {
         customName: undefined,
         statusMessage: profile.statusMessage,
         picture: profile.picturePath
-    }, { fields: ['name', 'statusMessage', 'picture', 'customName'] }).then(() => {
+    }, { fields: ['name', 'statusMessage', 'picture', 'customName'], returning: false }).then(() => {
         return User.find({ where: { selfMid: profile.mid, mid: profile.mid } });
     });
 };

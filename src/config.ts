@@ -22,18 +22,18 @@ export const E2EE_VERSION = 1;
 
 const config: Config = process.env.SLACK_TOKEN ? {
     slack: {
-        token: process.env.SLACK_TOKEN,
-        appToken: process.env.SLACK_APP_TOKEN,
-        user: process.env.SLACK_USER
+        token: process.env.SLACK_TOKEN || '',
+        appToken: process.env.SLACK_APP_TOKEN || '',
+        user: process.env.SLACK_USER || ''
     },
-    db: process.env.DB_PATH
-} : (() => safeLoad(readFileSync('config.yml', 'utf-8')))();
+    db: process.env.DB_PATH || ''
+} : (() => safeLoad(readFileSync('config.yml', 'utf-8')))() as Config;
 
 assert(config);
 assert(config.slack);
-assert(config.slack.token);
-assert(config.slack.appToken);
-assert(config.slack.user);
-assert(config.db);
+assert(!!config.slack.token);
+assert(!!config.slack.appToken);
+assert(!!config.slack.user);
+assert(!!config.db);
 
 export default config;

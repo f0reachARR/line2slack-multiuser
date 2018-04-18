@@ -104,7 +104,7 @@ export default class {
                     isReadReacted: false,
                     lastMsgId: '',
                     lastMsgTs: threadPost.ts
-                }, { fields: ['isRead', 'isReadReacted', 'lastMsgId', 'lastMsgTs'] });
+                }, { fields: ['isRead', 'isReadReacted', 'lastMsgId', 'lastMsgTs'], returning: false });
             }
         } else if (msg.text.match(/^add (u\w+)$/)) {
             const match = msg.text.match(/^add (u\w+)$/);
@@ -317,7 +317,7 @@ export default class {
                 isReadReacted: false,
                 lastMsgId: msg.id,
                 lastMsgTs: slackResult.ts
-            }, { fields: ['isRead', 'isReadReacted', 'lastMsgId', 'lastMsgTs'] });
+            }, { fields: ['isRead', 'isReadReacted', 'lastMsgId', 'lastMsgTs'], returning: false });
             // await this.normalClient.sendMessageReceipt(0, msg.to, [msg.id]);
         } else {
             return Promise.reject(slackResult.error);

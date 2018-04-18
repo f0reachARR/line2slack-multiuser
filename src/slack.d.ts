@@ -214,6 +214,7 @@ declare module '@slack/client' {
         removeAllListeners(event?: string | symbol): this;
         setMaxListeners(n: number): this;
         getMaxListeners(): number;
+        rawListeners(event: string | symbol): Function[];;
         listeners(event: string | symbol): Function[];
         emit(event: string | symbol, ...args: any[]): boolean;
         eventNames(): Array<string | symbol>;

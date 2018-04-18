@@ -113,7 +113,7 @@ const clients: { [mid: string]: Client } = {};
                             publicKey: Buffer.from(key.publicKey).toString('base64'),
                             mid: profile.mid
                         };
-                        const isCreated = await E2eeKey.upsert(keyItem, { fields: ['privateKey', 'publicKey'] }).catch(() => sendError('Failed to add key'));
+                        const isCreated = await E2eeKey.upsert(keyItem, { fields: ['privateKey', 'publicKey'], returning: false }).catch(() => sendError('Failed to add key'));
                         console.log(keyItem.keyId, isCreated ? 'Key added' : 'Key updated');
                     }
 
