@@ -1,5 +1,6 @@
 import { safeLoad } from 'js-yaml';
 import { readFileSync } from 'fs';
+import * as assert from 'assert';
 
 interface Config {
     slack: {
@@ -18,4 +19,21 @@ export const LINE_AUTH_ENDPOINT = 'https://ga2.line.naver.jp/api/v4p/rs';
 export const LINE_QR_POLL = 'https://ga2.line.naver.jp/Q';
 export const LINE_SYSTEM_NAME = 'Chrome';
 export const E2EE_VERSION = 1;
-export default (() => safeLoad(readFileSync('config.yml', 'utf-8')))() as Config;
+
+const config: Config = process.env.SLACK_TOKEN ? {
+    slack: {
+        token: process.env.SLACK_TOKEN,
+        appToken: process.env.SLACK_APP_TOKEN,
+        user: process.env.SLACK_USER
+    },
+    db: process.env.DB_PATH
+} : (() => safeLoad(readFileSync('config.yml', 'utf-8')))();
+
+assert(config);
+assert(config.slack);
+assert(config.slack.token);
+assert(config.slack.appToken);
+assert(config.slack.user);
+assert(config.db);
+
+export default config;

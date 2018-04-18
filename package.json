@@ -1,4 +1,7 @@
 {
+  "scripts": {
+    "start": "node bin/app.js"
+  },
   "dependencies": {
     "@slack/client": "^3.15.0",
     "express": "^4.16.2",
@@ -8,7 +11,7 @@
     "qr-image": "^3.2.0",
     "request": "^2.81.0",
     "sequelize": "^4.8.3",
-    "sqlite3": "^3.1.11",
+    "sqlite3": "^4.0.0",
     "thrift": "^0.10.0"
   },
   "devDependencies": {
@@ -17,7 +20,8 @@
     "@types/mime": "^2.0.0",
     "@types/qr-image": "^3.2.0",
     "@types/request": "^2.0.3",
-    "@types/sequelize": "^4.0.73"
+    "@types/sequelize": "^4.0.73",
+    "typescript": "^2.8.1"
   },
   "name": "line2slack-multiuser",
   "version": "1.0.0",
