@@ -17,7 +17,8 @@ import { get as httpGet, post as httpPost } from './utils/http';
 import * as request from 'request';
 import { getExtension } from 'mime';
 
-import db, { LineAccount, E2eeKey, User, LineAccountInstance, UserInstance, SlackMessage } from './db';
+import db, { LineAccount, E2eeKey, User, LineAccountInstance, UserInstance, SlackMessage, SlackMessageInstance } from './db';
+import { isPrimitive } from 'util';
 
 export default class {
     constructor(private account: LineAccountInstance, private rtmClient: RtmClient, private webClient: WebClient, private catchHandler: (msg: string, channel?: string) => Promise<never>) {
@@ -39,10 +40,11 @@ export default class {
         this.cancelFunction = () => null;
 
         // Setup Slack Event
-        const handler = msg => this.processMessage(msg);
+        const handler = msg => this.processMessage(msg).catch(msg => this.catchHandler(typeof msg === 'string' ? msg : 'An error occured'));
         this.rtmClient.on('message', handler);
 
         // Polling Loop
+        let queue = Promise.resolve();
         while (this.cancelFunction) {
             this.pollingClient.conn.removeAllListeners('error');
             const errorPromise = new Promise<null>(resolve => this.pollingClient.conn.once('error', () => resolve(null)));
@@ -51,11 +53,12 @@ export default class {
             const result = await Promise.race([errorPromise, longPollProm, this.cancelPromise]);
             if (result) {
                 for (const item of result) {
-                    await this.processOperation(item).catch(msg => this.catchHandler(typeof msg === 'string' ? msg : 'An error occured'));
+                    queue = queue.then(() => this.processOperation(item).catch(msg => this.catchHandler(typeof msg === 'string' ? msg : 'An error occured')));
                 }
             }
             console.log('Poll end', this.account.mid);
         }
+        await queue;
         this.rtmClient.removeListener('message', handler);
         console.log('Stopped');
     }
@@ -116,7 +119,7 @@ export default class {
     private async processOperation(op: LineTypes.Operation) {
         switch (op.type) {
             case LineTypes.OpType.RECEIVE_MESSAGE:
-                await this.postMessageToSlack(op.message);
+                await this.onReceiveMessage(op.message);
                 break;
             case LineTypes.OpType.NOTIFIED_UPDATE_PROFILE:
                 const contact = await this.normalClient.getContact(op.param1);
@@ -130,6 +133,9 @@ export default class {
             case LineTypes.OpType.NOTIFIED_E2EE_KEY_UPDATE:
                 // TODO
                 break;
+            case LineTypes.OpType.NOTIFIED_LEAVE_CHAT:
+                await this.onNotifiedLeaveChat(op);
+                break;
             case LineTypes.OpType.NOTIFIED_READ_MESSAGE:
             case LineTypes.OpType.RECEIVE_MESSAGE_RECEIPT:
                 const conversation = await SlackMessage.find({ where: { channel: this.account.channel, mid: op.param1 } });
@@ -142,6 +148,8 @@ export default class {
                     await conversation.save();
                 }
                 break;
+            case LineTypes.OpType.DUMMY:
+                break;
             default:
                 console.log('Unknown operation', op);
         }
@@ -149,8 +157,27 @@ export default class {
             this.lastOpNum = op.revision;
     }
 
-    private async postMessageToSlack(msg: LineTypes.Message) {
-        if (!this.account.channel) return;
+    private async onNotifiedLeaveChat(op: LineTypes.Operation) {
+        let conversation = await SlackMessage.find({ where: { channel: this.account.channel, mid: op.param1 } });
+        if (!conversation && this.getMidType(op.param1) === LineTypes.MIDType.GROUP) {
+            conversation = await this.findOrStartGroupConversation(op.param1);
+        }
+        if (!conversation) return;
+        const contact = await this.getUserContact(op.param2);
+        if (!contact) {
+            return Promise.reject('No contact');
+        }
+        await this.webClient.chat.postMessage(this.account.channel, '', {
+            attachments: [{
+                fallback: `${this.getDisplayName(contact)} が退室しました`,
+                text: `${this.getDisplayName(contact)} が退室しました`,
+                footer: 'Line2Slack'
+            }],
+            icon_url: `http://obs.line-cdn.net${contact.picture}/preview`
+        });
+    }
+
+    private async onReceiveMessage(msg: LineTypes.Message) {
         if (msg.contentType === LineTypes.ContentType.NONE || msg.contentType === LineTypes.ContentType.LOCATION)
             await this.decryptE2ee(msg);
         const slackMessage: SlackChatPostMessageParams = {
@@ -158,20 +185,19 @@ export default class {
         };
         slackMessage.attachments = [];
 
-        let threadMid = ''; // GroupかUserかで異なる
-
+        let slackThreadInfo: SlackMessageInstance | null;
+        let threadMid = msg.from_;
         switch (msg.toType) {
             case LineTypes.MIDType.USER:
-                threadMid = msg.from_;
+                slackThreadInfo = await SlackMessage.find({ where: { channel: this.account.channel, mid: msg.from_ } });
                 break;
             case LineTypes.MIDType.GROUP:
-                threadMid = msg.to;
+                slackThreadInfo = await this.findOrStartGroupConversation(threadMid = msg.to);
+                if (!slackThreadInfo) return; // TODO
                 break;
             default: // TODO
                 return;
         }
-
-        const slackThreadInfo = await SlackMessage.find({ where: { channel: this.account.channel, mid: threadMid } });
         if (slackThreadInfo)
             slackMessage.thread_ts = slackThreadInfo.threadTs;
 
@@ -179,21 +205,6 @@ export default class {
         slackMessage.username = this.getDisplayName(contact);
         if (contact.picture)
             slackMessage.icon_url = `http://obs.line-cdn.net${contact.picture}/preview`;
-        if (msg.toType === LineTypes.MIDType.GROUP && !slackThreadInfo) {
-            const group = await this.normalClient.getGroup(msg.to);
-            // Threadを始める
-            const threadInfo = await this.webClient.chat.postMessage(this.account.channel, '', {
-                attachments: [
-                    {
-                        fallback: `グループ: ${group.name}`,
-                        title: `グループ: ${group.name}`
-                    }
-                ],
-                username: group.name,
-                icon_url: `http://obs.line-cdn.net${group.picturePath}/preview`
-            });
-            slackMessage.thread_ts = threadInfo.ts;
-        }
 
         // ContentTypeで
         switch (msg.contentType) {
@@ -318,10 +329,37 @@ export default class {
                 lastMsgId: msg.id,
                 lastMsgTs: slackResult.ts
             }, { fields: ['isRead', 'isReadReacted', 'lastMsgId', 'lastMsgTs'], returning: false });
-            // await this.normalClient.sendMessageReceipt(0, msg.to, [msg.id]);
         } else {
             return Promise.reject(slackResult.error);
         }
+    }
+
+    private async findOrStartGroupConversation(mid: string): Promise<SlackMessageInstance | null> {
+        let slackThreadInfo = await SlackMessage.find({ where: { channel: this.account.channel, mid } });
+        if (slackThreadInfo) return slackThreadInfo;
+        const group = await this.normalClient.getGroup(mid);
+        // Threadを始める
+        const threadInfo = await this.webClient.chat.postMessage(this.account.channel, '', {
+            attachments: [
+                {
+                    fallback: `グループ: ${group.name}`,
+                    title: `グループ: ${group.name}`
+                }
+            ],
+            username: group.name,
+            icon_url: `http://obs.line-cdn.net${group.picturePath}/preview`
+        });
+        [slackThreadInfo] = await SlackMessage.upsert({
+            channel: this.account.channel,
+            mid,
+            threadTs: threadInfo.ts,
+            isRead: false,
+            isReadReacted: false,
+            lastMsgId: '0',
+            lastMsgTs: threadInfo.ts
+        }, { fields: ['isRead', 'isReadReacted', 'lastMsgId', 'lastMsgTs'], returning: true });
+        if (slackThreadInfo) return slackThreadInfo;
+        return null;
     }
 
     private async decryptE2ee(msg: LineTypes.Message) {

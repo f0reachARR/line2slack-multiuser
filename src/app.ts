@@ -101,7 +101,7 @@ const clients: { [mid: string]: Client } = {};
                         accountEntry.token = loginResult.authToken;
                         await accountEntry.save().catch(() => sendError('Failed to save'));
                     } else {
-                        accountEntry = await LineAccount.create({ mid: profile.mid, token: loginResult.authToken }).catch(() => sendError('Failed to create'));
+                        accountEntry = await LineAccount.create({ mid: profile.mid, token: loginResult.authToken, channel: '' }).catch(() => sendError('Failed to create'));
                         console.log('Account created');
                     }
 
@@ -118,14 +118,14 @@ const clients: { [mid: string]: Client } = {};
                     }
 
                     // チャンネル確認+作成
-                    if (accountEntry.channel && accountEntry.channel.length !== 0) {
+                    if (accountEntry.channel.length !== 0) {
                         const channelInfo = await slackAppApi.groups.info(accountEntry.channel).catch(() => null);
                         if (!channelInfo || !channelInfo.ok || channelInfo.group.is_archived) {
                             console.log('Unknown channel', channelInfo);
                             accountEntry.channel = '';
                         }
                     }
-                    if (!accountEntry.channel || accountEntry.channel.length === 0) {
+                    if (accountEntry.channel.length === 0) {
                         console.log('Creating channel');
                         const slackChannel = await slackAppApi.groups.create(`l2s-${Math.floor(Date.now() / 1000)}`).catch(() => sendError('Failed to create channel to communicate'));
                         if (!slackChannel) return;

@@ -9,7 +9,7 @@ interface LineAccountAttributes {
     id?: number;
     mid: string;
     token: string;
-    channel?: string;
+    channel: string;
     createdAt?: Date;
     updatedAt?: Date;
 }
@@ -27,7 +27,7 @@ export const LineAccount = conn.define<LineAccountInstance, LineAccountAttribute
     },
     channel: {
         type: Sequelize.STRING,
-        allowNull: true
+        allowNull: false
     }
 },
     {
