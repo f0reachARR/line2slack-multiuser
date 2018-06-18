@@ -54,9 +54,11 @@ export default class {
             if (result) {
                 for (const item of result) {
                     queue = queue.then(() => this.processOperation(item).catch(msg => this.catchHandler(typeof msg === 'string' ? msg : 'An error occured')));
+                    if (item.revision > this.lastOpNum)
+                        this.lastOpNum = item.revision;
                 }
             }
-            console.log('Poll end', this.account.mid);
+            console.log('Poll end', this.account.mid, this.lastOpNum);
         }
         await queue;
         this.rtmClient.removeListener('message', handler);
@@ -153,8 +155,6 @@ export default class {
             default:
                 console.log('Unknown operation', op);
         }
-        if (op.revision > this.lastOpNum)
-            this.lastOpNum = op.revision;
     }
 
     private async onNotifiedLeaveChat(op: LineTypes.Operation) {
