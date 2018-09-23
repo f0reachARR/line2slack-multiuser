@@ -266,20 +266,17 @@ export default class {
                 });
                 const mime = imageRes.headers['content-type'] || 'image/jpg';
                 const fname = msg.contentMetadata['FILE_NAME'] || `${msg.id}.${getExtension(mime)}`;
-                const fileUpInfo = await uploadFile(Config.slack.token, imageRes.body as Buffer, [this.account.channel], mime, fname);
+                const fileUpInfo = await uploadFile(Config.slack.token, imageRes.body as Buffer, [this.account.channel], slackMessage.thread_ts, mime, fname);
                 if (fileUpInfo.ok) {
                     if (mime.startsWith('image')) {
                         slackMessage.attachments.push({
                             fallback: '画像が送信されました',
-                            pretext: '画像が送信されました',
-                            text: `<${fileUpInfo.file.permalink}>`,
-                            image_url: fileUpInfo.file.thumb_480
+                            pretext: '画像が送信されました'
                         });
                     } else {
                         slackMessage.attachments.push({
                             fallback: 'ファイルが送信されました',
-                            title: 'ファイルが送信されました',
-                            title_link: fileUpInfo.file.permalink
+                            title: 'ファイルが送信されました'
                         });
                     }
                 }

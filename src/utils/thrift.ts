@@ -3,9 +3,9 @@ import * as url from 'url';
 import { LINE_APP } from '../config';
 
 export function createThrift<T>(endpoint: string, service: { Client }, options?: { headers?: { [k: string]: string } }): T {
-    let parsed = url.parse(endpoint);
+    const parsed = url.parse(endpoint);
     if (parsed.hostname && parsed.protocol) {
-        let conn = thrift.createHttpConnection(parsed.hostname, parsed.protocol.match(/https/) ? 443 : 80, {
+        const conn = thrift.createHttpConnection(parsed.hostname, parsed.protocol.match(/https/) ? 443 : 80, {
             https: !!parsed.protocol.match(/https/),
             transport: thrift.TBufferedTransport,
             protocol: thrift.TCompactProtocol,
@@ -20,9 +20,9 @@ export function createThrift<T>(endpoint: string, service: { Client }, options?:
 }
 
 export function createThrift2<T>(endpoint: string, service: { Client }, options?: { headers?: { [k: string]: string } }): { client: T, conn: thrift.ClientConnection } {
-    let parsed = url.parse(endpoint);
+    const parsed = url.parse(endpoint);
     if (parsed.hostname && parsed.protocol) {
-        let conn = thrift.createHttpConnection(parsed.hostname, parsed.protocol.match(/https/) ? 443 : 80, {
+        const conn = thrift.createHttpConnection(parsed.hostname, parsed.protocol.match(/https/) ? 443 : 80, {
             https: !!parsed.protocol.match(/https/),
             transport: thrift.TBufferedTransport,
             protocol: thrift.TCompactProtocol,
