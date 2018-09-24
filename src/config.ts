@@ -26,7 +26,7 @@ const config: Config = process.env.SLACK_TOKEN ? {
         appToken: process.env.SLACK_APP_TOKEN || '',
         user: process.env.SLACK_USER || ''
     },
-    db: process.env.DB_PATH || ''
+    db: process.env.DATABASE || ''
 } : (() => safeLoad(readFileSync('config.yml', 'utf-8')))() as Config;
 
 assert(config);

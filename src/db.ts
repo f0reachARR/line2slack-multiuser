@@ -3,7 +3,7 @@ import Config from './config';
 import * as LineTypes from './thrift/talk_types';
 import * as Bluebird from 'bluebird';
 
-const conn = new Sequelize('line2slack', '', '', { dialect: 'sqlite', storage: Config.db, logging: false });
+const conn = new Sequelize(Config.db, {});
 
 interface LineAccountAttributes {
     id?: number;
