@@ -39,7 +39,7 @@ const clients: { [mid: string]: Client } = {};
         if (message.channel.startsWith('D')) { // is DM?
             if (message.text === 'login') {
                 console.log('Login session started');
-                const qrConn = createThrift<TalkService.Client>(LINE_UNAUTH_ENDPOINT, TalkService);
+                const qrConn = createThrift(LINE_UNAUTH_ENDPOINT, TalkService);
                 const keyForEx = e2ee.generateKeyPair();
                 const qrLoginInfo = await qrConn.getAuthQrcode(true, LINE_SYSTEM_NAME, true).catch(() => sendError('Failed to getAuthQrcode'));
                 if (!qrLoginInfo) return;
@@ -68,7 +68,7 @@ const clients: { [mid: string]: Client } = {};
                     // E2EE鍵復号
                     const meta = body.result.metadata;
                     // ログイン
-                    const loginConn = createThrift<AuthService.Client>(LINE_AUTH_ENDPOINT, AuthService);
+                    const loginConn = createThrift(LINE_AUTH_ENDPOINT, AuthService);
                     const chain = e2ee.decryptKeychain(keyForEx, meta.encryptedKeyChain, meta.publicKey, meta.hashKeyChain);
                     const loginReq = new LineTypes.LoginRequest({
                         keepLoggedIn: false,
@@ -85,7 +85,7 @@ const clients: { [mid: string]: Client } = {};
                     }
 
                     // profile取得
-                    const userConn = createThrift<TalkService.Client>(LINE_NORMAL_ENDPOINT, TalkService, { headers: { 'X-Line-Access': loginResult.authToken } });
+                    const userConn = createThrift(LINE_NORMAL_ENDPOINT, TalkService, { headers: { 'X-Line-Access': loginResult.authToken } });
                     const profile = await userConn.getProfile().catch(() => sendError('Failed to get profile'));
                     if (!profile || !profile.mid) {
                         await sendError('Failed to get profile');
