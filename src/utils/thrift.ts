@@ -31,11 +31,12 @@ export function createThrift<T>(
     throw Error('An error occured');
 }
 
-export function createThrift2<T>(
+export type ThriftWithConnection<T> = { client: T, conn: thrift.ClientConnection };
+export function createThriftWithConnection<T>(
     endpoint: string,
     service: ThriftService<T>,
     options: { headers?: { [k: string]: string } } = {}
-): { client: T, conn: thrift.ClientConnection } {
+): ThriftWithConnection<T> {
     const parsed = url.parse(endpoint);
     if (parsed.hostname && parsed.protocol) {
         const conn = thrift.createHttpConnection(parsed.hostname, parsed.protocol.match(/https/) ? 443 : 80, {

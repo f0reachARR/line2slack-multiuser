@@ -86,6 +86,11 @@
             true,
             "allow-null-check"
         ],
-        "use-isnan": true
+        "use-isnan": true,
+        "quotemark": [
+            true,
+            "single"
+        ],
+        "no-unused-variable": true
     }
 }
