@@ -2,6 +2,7 @@ import * as crypto from 'crypto';
 import * as Thrift from 'thrift';
 import * as Curve25519 from './curve25519';
 import * as Types from '../thrift/talk_types';
+import { E2eeKeyInstance } from '../db';
 
 const KEY_BYTES = Buffer.from('Key', 'utf8');
 const IV_BYTES = Buffer.from('IV', 'utf8');
@@ -141,7 +142,7 @@ export function decryptMessage(msg: Types.Message, self: KeyPair, sender: KeyPai
     decryptMessageWithSecret(msg, sharedSecret);
 }
 
-export function decryptGroupSharedKey(msg: Types.Message, encryptedShread: Buffer, self: KeyPair,creator: KeyPair){
+export function decryptGroupSharedKey(encryptedShread: Buffer, self: KeyPair,creator: KeyPair){
     if (!self.privateKey) throw new Error('Invalid');
     const sharedDecKey = Buffer.from(Curve25519.sharedKey(self.privateKey, creator.publicKey).buffer);
     const aesKey = sha256(Buffer.concat([sharedDecKey, KEY_BYTES]));

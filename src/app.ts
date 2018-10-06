@@ -109,8 +109,8 @@ const clients: { [mid: string]: Client } = {};
                     for (const key of chain) {
                         const keyItem = {
                             keyId: key.keyId,
-                            privateKey: Buffer.from(key.privateKey).toString('base64'),
-                            publicKey: Buffer.from(key.publicKey).toString('base64'),
+                            privateKey: key.privateKey,
+                            publicKey: key.publicKey,
                             mid: profile.mid
                         };
                         const isCreated = await E2eeKey.upsert(keyItem, { fields: ['privateKey', 'publicKey'], returning: false }).catch(() => sendError('Failed to add key'));

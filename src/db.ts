@@ -41,8 +41,8 @@ interface E2eeKeyAttributes {
     id?: number;
     mid: string;
     keyId: number;
-    publicKey: string;
-    privateKey?: string;
+    publicKey: Buffer;
+    privateKey?: Buffer;
     createdAt?: Date;
     updatedAt?: Date;
 }
@@ -59,11 +59,11 @@ export const E2eeKey = conn.define<E2eeKeyInstance, E2eeKeyAttributes>('e2eekey'
         allowNull: false
     },
     publicKey: { // groupの時はsharedKeyを入れる
-        type: Sequelize.STRING,
+        type: Sequelize.BLOB,
         allowNull: false
     },
     privateKey: {
-        type: Sequelize.STRING,
+        type: Sequelize.BLOB,
         allowNull: true
     }
 }, {

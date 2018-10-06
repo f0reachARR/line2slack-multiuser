@@ -10,6 +10,7 @@ import { createThrift, createThriftWithConnection, ThriftWithConnection } from '
 import * as TalkService from '../thrift/TalkService';
 import * as LineTypes from '../thrift/talk_types';
 import { LinePollingClient } from './polling';
+import Store from './store';
 
 // tslint:disable-next-line:no-any
 export type LineHandler = (this: Client, op: LineTypes.Operation) => Promise<any>;
@@ -17,6 +18,7 @@ export type LineHandler = (this: Client, op: LineTypes.Operation) => Promise<any
 export type SlackHandler = (this: Client, msg: SlackMessageEvent) => Promise<any>;
 export default class Client {
     lineClient: TalkService.Client;
+    store: Store;
     private polling: LinePollingClient;
 
     private lineHandlers: LineHandler[] = [];
@@ -30,6 +32,7 @@ export default class Client {
         this.lineClient = createThrift(LINE_NORMAL_ENDPOINT, TalkService, { headers: { 'X-Line-Access': account.token } });
         const pollingClient = createThriftWithConnection(LINE_POLL_ENDPOINT, TalkService, { headers: { 'X-Line-Access': account.token } });
         this.polling = new LinePollingClient(this.lineClient, pollingClient);
+        this.store = new Store(this);
     }
 
     private async slackMessageHandler(msg: SlackMessageEvent) {
