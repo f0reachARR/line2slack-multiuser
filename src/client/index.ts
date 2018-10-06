@@ -52,8 +52,8 @@ export default class Client {
     }
 
     async stop() {
-        this.rtmClient.removeListener('message', this.slackMessageHandler);
-        this.polling.removeListener('receive', this.lineMessageHandler);
+        this.rtmClient.off('message', this.slackMessageHandler);
+        this.polling.off('receive', this.lineMessageHandler);
         await this.polling.stop();
     }
 

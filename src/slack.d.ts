@@ -177,7 +177,7 @@ declare module '@slack/client' {
         on(event: CLIENT_EVENTS.WEB.RATE_LIMITED_TYPE, handler: (headerSecs: number) => void): void;
     }
 
-    class RtmClientBase implements EventEmitter {
+    class RtmClientBase extends EventEmitter {
         ws: WebSocket;
 
         MAX_RECONNECTION_ATTEMPTS: number;
