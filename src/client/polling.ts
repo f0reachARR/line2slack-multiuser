@@ -10,6 +10,7 @@ export class LinePollingClient extends EventEmitter {
     private pollingPromise: Promise<void>;
 
     on(event: 'receive', listener: (op: LineTypes.Operation) => void): this;
+    on(event: 'error', listener: (err: LineTypes.TalkException) => void): this;
 
     // tslint:disable-next-line:no-any
     on(event: string | symbol, listener: (...args: any[]) => void): this {
@@ -34,12 +35,18 @@ export class LinePollingClient extends EventEmitter {
                 this.pollingClient.conn.once('error', () => resolve());
             });
             const longPollProm = this.pollingClient.client.fetchOperations(lastOpNum, 1);
-            const result = await Promise.race([errorPromise, longPollProm, this.cancelPromise]);
-            if (result) {
-                for (const item of result) {
-                    this.emit('receive', item);
-                    if (item.revision > lastOpNum)
-                        lastOpNum = item.revision;
+            try {
+                const result = await Promise.race([errorPromise, longPollProm, this.cancelPromise]);
+                if (result) {
+                    for (const item of result) {
+                        this.emit('receive', item);
+                        if (item.revision > lastOpNum)
+                            lastOpNum = item.revision;
+                    }
+                }
+            } catch (ex) {
+                if (ex instanceof LineTypes.TalkException) {
+                    this.emit('error', ex);
                 }
             }
         }
