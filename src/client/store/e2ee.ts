@@ -1,14 +1,9 @@
-import Client from '..';
-
 import { E2eeKey } from '../../db';
 import { E2EE_VERSION } from '../../config';
 import { decryptGroupSharedKey } from '../../e2ee';
+import { StoreBase } from '.';
 
-export default class E2eeStore {
-    constructor(private client: Client) { }
-
-    get selfMid() { return this.client.account.mid; }
-
+export default class E2eeStore extends StoreBase {
     async fetchKey(mid: string, keyId: number) {
         let keyEntry = await E2eeKey.find({ where: { mid, keyId } });
         if (!keyEntry) {

@@ -7,3 +7,9 @@ export default class Store {
         this.e2ee = new E2eeStore(client);
     }
 }
+
+export class StoreBase {
+    constructor(protected client: Client) { }
+
+    protected get selfMid() { return this.client.account.mid; }
+}
