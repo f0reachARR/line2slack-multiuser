@@ -13,7 +13,7 @@
     "mysql2": "^1.6.1",
     "qr-image": "^3.2.0",
     "request": "^2.81.0",
-    "sequelize": "^4.8.3",
+    "sequelize": "^4.39.0",
     "sqlite3": "^4.0.2",
     "thrift": "^0.10.0"
   },
@@ -25,7 +25,7 @@
     "@types/mime": "^2.0.0",
     "@types/qr-image": "^3.2.0",
     "@types/request": "^2.0.3",
-    "@types/sequelize": "^4.0.73",
+    "@types/sequelize": "^4.27.27",
     "typescript": "^3.1.1"
   },
   "name": "line2slack-multiuser",
