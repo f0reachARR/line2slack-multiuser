@@ -66,6 +66,7 @@ export default async function (this: Client, op: Operation) {
                 ...slackOpts
             });
         }
+        return true;
     } else {
         await this.webClient.chat.postMessage(this.account.channel, 'Unknown message type', slackOpts);
     }
