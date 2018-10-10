@@ -1,4 +1,5 @@
 import { MIDType } from '../../thrift/talk_types';
+import { UserInstance } from '../../db';
 
 export const getMidType = (mid: string) => {
     switch (mid.substr(0, 1)) {
@@ -9,4 +10,11 @@ export const getMidType = (mid: string) => {
         default:
             throw new Error('not implemented');
     }
+};
+
+export const getDisplayName = (contact: UserInstance, long = false) => {
+    if (long)
+        return contact.customName ? `${contact.name} (${contact.customName})` : contact.name;
+    else
+        return contact.customName || contact.name;
 };
