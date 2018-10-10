@@ -150,10 +150,10 @@ const clients: { [mid: string]: Client } = {};
                     console.log('Contacts stored');
 
                     if (clients[profile.mid]) {
-                        await clients[profile.mid].stopPolling();
+                        await clients[profile.mid].stop();
                     }
-                    clients[profile.mid] = new Client(accountEntry, slackRtm, slackApi, sendError);
-                    clients[profile.mid].startPolling();
+                    clients[profile.mid] = new Client(accountEntry, slackRtm, slackApi);
+                    clients[profile.mid].start();
                 });
             } else if (message.text === 'list') {
                 const accounts = await LineAccount.findAll();
@@ -171,8 +171,8 @@ const clients: { [mid: string]: Client } = {};
 
     const accounts = await LineAccount.findAll();
     for (const account of accounts) {
-        clients[account.mid] = new Client(account, slackRtm, slackApi, sendError);
-        clients[account.mid].startPolling();
+        clients[account.mid] = new Client(account, slackRtm, slackApi);
+        clients[account.mid].start();
     }
 })();
 

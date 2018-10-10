@@ -10,7 +10,7 @@ import Config, {
     LINE_SYSTEM_NAME,
     E2EE_VERSION,
 } from './config';
-import { createThrift, createThrift2 } from './utils/thrift';
+import { createThrift, createThriftWithConnection } from './utils/thrift';
 import { uploadFile } from './utils/slack';
 import * as e2ee from './e2ee';
 import { get as httpGet, post as httpPost } from './utils/http';
@@ -23,7 +23,7 @@ import { isPrimitive } from 'util';
 export default class {
     constructor(private account: LineAccountInstance, private rtmClient: RtmClient, private webClient: WebClient, private catchHandler: (msg: string, channel?: string) => Promise<never>) {
         this.normalClient = createThrift(LINE_NORMAL_ENDPOINT, TalkService, { headers: { 'X-Line-Access': account.token } });
-        this.pollingClient = createThrift2(LINE_POLL_ENDPOINT, TalkService, { headers: { 'X-Line-Access': account.token } });
+        this.pollingClient = createThriftWithConnection(LINE_POLL_ENDPOINT, TalkService, { headers: { 'X-Line-Access': account.token } });
     }
 
     private normalClient: TalkService.Client;
@@ -69,6 +69,7 @@ export default class {
         console.log('Stopping....');
         if (this.cancelFunction) this.cancelFunction();
         this.cancelFunction = null;
+        Observable.
     }
 
     private async processMessage(msg: SlackMessageEvent) {
