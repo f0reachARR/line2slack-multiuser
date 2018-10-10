@@ -1,5 +1,4 @@
 import * as Sequelize from 'sequelize';
-import * as Bluebird from 'bluebird';
 import * as LineTypes from '../thrift/talk_types';
 import conn from '.';
 
@@ -17,8 +16,8 @@ interface UserAttributes {
 
 export interface UserInstance extends Sequelize.Instance<UserAttributes>, UserAttributes { }
 interface UserModelExt extends Sequelize.Model<UserInstance, UserAttributes> {
-    addContact(selfMid: string, contact: LineTypes.Contact): Bluebird<UserInstance | null>;
-    addProfile(profile: LineTypes.Profile): Bluebird<UserInstance | null>;
+    addContact(selfMid: string, contact: LineTypes.Contact): Promise<UserInstance | null>;
+    addProfile(profile: LineTypes.Profile): Promise<UserInstance | null>;
 }
 export const User = conn.define<UserInstance, UserAttributes>('user', {
     selfMid: {
@@ -50,28 +49,36 @@ export const User = conn.define<UserInstance, UserAttributes>('user', {
             { fields: ['selfMid', 'mid'], unique: true }
         ],
     }) as UserModelExt;
-User.addContact = (selfMid: string, contact: LineTypes.Contact) => {
-    return User.upsert({
+User.addContact = async (selfMid: string, contact: LineTypes.Contact) => {
+    const value = {
         selfMid,
         mid: contact.mid,
         name: contact.displayName,
         customName: contact.displayNameOverridden,
         statusMessage: contact.statusMessage,
         picture: contact.picturePath
-    }, { fields: ['name', 'statusMessage', 'picture', 'customName'], returning: false }).then(() => {
-        return User.find({ where: { selfMid, mid: contact.mid } });
+    };
+    const [entry, created] = await User.findOrCreate({
+        where: { selfMid, mid: contact.mid },
+        defaults: value
     });
+    if (!created) await entry.set(value).save();
+    return entry;
 };
 
-User.addProfile = (profile: LineTypes.Profile) => {
-    return User.upsert({
+User.addProfile = async (profile: LineTypes.Profile) => {
+    const value = {
         selfMid: profile.mid,
         mid: profile.mid,
         name: profile.displayName,
         customName: undefined,
         statusMessage: profile.statusMessage,
         picture: profile.picturePath
-    }, { fields: ['name', 'statusMessage', 'picture', 'customName'], returning: false }).then(() => {
-        return User.find({ where: { selfMid: profile.mid, mid: profile.mid } });
+    };
+    const [entry, created] = await User.findOrCreate({
+        where: { selfMid: profile.mid, mid: profile.mid },
+        defaults: value
     });
+    if (!created) await entry.set(value).save();
+    return entry;
 };
