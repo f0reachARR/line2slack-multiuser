@@ -2,7 +2,7 @@ import * as thrift from 'thrift';
 import * as url from 'url';
 import { LINE_APP } from '../config';
 
-class ThriftService<T> extends thrift.Service {
+interface ThriftService<T> extends thrift.Service {
     Client: {
         // tslint:disable-next-line:no-any
         new(...args: any[]): T;
