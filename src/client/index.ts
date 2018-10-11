@@ -12,15 +12,16 @@ import * as LineTypes from '../thrift/talk_types';
 import { LinePollingClient } from './polling';
 import Store from './store';
 
+import { handlers as lineHandlers } from './handlers/line';
+import { handlers as slackHandlers } from './handlers/slack';
+
 export type LineHandler = (this: Client, op: LineTypes.Operation) => Promise<boolean | void>;
 export type SlackHandler = (this: Client, msg: SlackMessageEvent) => Promise<boolean | void>;
+
 export default class Client {
     lineClient: TalkService.Client;
     store: Store;
     private polling: LinePollingClient;
-
-    private lineHandlers: LineHandler[] = [];
-    private slackHandlers: SlackHandler[] = [];
 
     constructor(
         public account: LineAccountInstance,
@@ -34,13 +35,13 @@ export default class Client {
     }
 
     private async slackMessageHandler(msg: SlackMessageEvent) {
-        for (const handler of this.slackHandlers)
+        for (const handler of slackHandlers)
             if (await handler.bind(this)(msg) === true) break;
     }
 
     private async lineMessageHandler(op: LineTypes.Operation) {
-        for (const handler of this.lineHandlers)
-        if (await handler.bind(this)(op) === true) break;
+        for (const handler of lineHandlers)
+            if (await handler.bind(this)(op) === true) break;
     }
 
     start() {
@@ -54,7 +55,4 @@ export default class Client {
         this.polling.off('receive', this.lineMessageHandler);
         await this.polling.stop();
     }
-
-    useSlack(...handler: SlackHandler[]) { this.slackHandlers.push(...handler); }
-    useLine(...handler: LineHandler[]) { this.lineHandlers.push(...handler); }
 }
