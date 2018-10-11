@@ -14,13 +14,13 @@ import Config, {
     LINE_SYSTEM_NAME,
     LINE_QR_POLL
 } from './config';
-import { promisize, waitPromise } from './utils/promisize';
 import { createThrift } from './utils/thrift';
 import { uploadFile } from './utils/slack';
 import * as e2ee from './e2ee';
 import * as request from 'request';
 import db, { LineAccount, E2eeKey, User, LineAccountInstance, UserInstance } from './db';
 import Client from './client';
+import { get } from './utils/http';
 
 const slackRtm = new RtmClient(Config.slack.token, {
     useRtmConnect: true,
@@ -41,70 +41,62 @@ const clients: { [mid: string]: Client } = {};
                 console.log('Login session started');
                 const qrConn = createThrift(LINE_UNAUTH_ENDPOINT, TalkService);
                 const keyForEx = e2ee.generateKeyPair();
-                const qrLoginInfo = await qrConn.getAuthQrcode(true, LINE_SYSTEM_NAME, true).catch(() => sendError('Failed to getAuthQrcode'));
+                const qrLoginInfo = await qrConn.getAuthQrcode(true, LINE_SYSTEM_NAME, true);
                 if (!qrLoginInfo) return;
                 const codeUrl = `${qrLoginInfo.callbackUrl}?${e2ee.generateE2eeQrParam(keyForEx)}`;
                 const qrImage = createQrCode(codeUrl, { type: 'png' }) as Buffer;
                 // tslint:disable-next-line:no-any
-                const qrFileInfo: any = await uploadFile(Config.slack.token, qrImage, [message.channel], 'image/png', 'qrcode.png').catch(() => sendError('Failed to upload QRCODE'));
+                const qrFileInfo: any = await uploadFile(Config.slack.token, qrImage, [message.channel], 'image/png', 'qrcode.png');
                 if (!qrFileInfo || !('file' in qrFileInfo) || !('id' in qrFileInfo.file)) {
-                    await sendError('Failed to upload QRCODE');
-                    return;
+                    throw new Error('Failed to upload QRCODE');
                 }
-                request.get(LINE_QR_POLL, {
+                const res = await get({
+                    uri: LINE_QR_POLL,
                     headers: {
                         'X-Line-Application': LINE_APP,
                         'X-Line-Access': qrLoginInfo.verifier
                     },
                     json: true
-                }, async (err, res, body) => {
-                    // QRコード画像消去
-                    await slackApi.files.delete(qrFileInfo.file.id).catch(() => null).catch(() => sendError('Failed to delete'));
-                    if (err || !body || !('result' in body) || !('verifier' in body.result) || body.result.authPhase !== 'QRCODE_VERIFIED') {
-                        await sendError('Login session timed out');
-                        return;
-                    }
+                });
+                const { body } = res;
+                // QRコード画像消去
+                await slackApi.files.delete(qrFileInfo.file.id);
+                if (!body || !('result' in body) || body.result.authPhase !== 'QRCODE_VERIFIED') {
+                    throw new Error('Login session timed out');
+                }
 
-                    // E2EE鍵復号
+                // ログイン
+                const loginConn = createThrift(LINE_AUTH_ENDPOINT, AuthService);
+                const loginReq = new LineTypes.LoginRequest({
+                    keepLoggedIn: false,
+                    verifier: body.result.verifier,
+                    systemName: LINE_SYSTEM_NAME,
+                    identityProvider: LineTypes.IdentityProvider.LINE,
+                    type: LineTypes.LoginType.QRCODE,
+                    accessLocation: ''
+                });
+                const loginResult = await loginConn.loginZ(loginReq);
+
+                // profile取得
+                const userConn = createThrift(LINE_NORMAL_ENDPOINT, TalkService, { headers: { 'X-Line-Access': loginResult.authToken } });
+                const profile = await userConn.getProfile();
+                await User.addProfile(profile);
+                console.log('logged in', 'mid', profile.mid);
+
+                // MIDがすでにあるか(チャンネルをこの後作成するためupsertしない)
+                let accountEntry = await LineAccount.find({ where: { mid: profile.mid } });
+                if (accountEntry) {
+                    console.log('Account already created');
+                    accountEntry.token = loginResult.authToken;
+                    await accountEntry.save();
+                } else {
+                    accountEntry = await LineAccount.create({ mid: profile.mid, token: loginResult.authToken, channel: '' });
+                    console.log('Account created');
+                }
+
+                if (body.result.metadata) {
                     const meta = body.result.metadata;
-                    // ログイン
-                    const loginConn = createThrift(LINE_AUTH_ENDPOINT, AuthService);
                     const chain = e2ee.decryptKeychain(keyForEx, meta.encryptedKeyChain, meta.publicKey, meta.hashKeyChain);
-                    const loginReq = new LineTypes.LoginRequest({
-                        keepLoggedIn: false,
-                        verifier: body.result.verifier,
-                        systemName: LINE_SYSTEM_NAME,
-                        identityProvider: LineTypes.IdentityProvider.LINE,
-                        type: LineTypes.LoginType.QRCODE,
-                        accessLocation: ''
-                    });
-                    const loginResult = await loginConn.loginZ(loginReq).catch(() => sendError('Failed to login'));
-                    if (!loginResult || !loginResult.authToken) {
-                        await sendError('Failed to login');
-                        return;
-                    }
-
-                    // profile取得
-                    const userConn = createThrift(LINE_NORMAL_ENDPOINT, TalkService, { headers: { 'X-Line-Access': loginResult.authToken } });
-                    const profile = await userConn.getProfile().catch(() => sendError('Failed to get profile'));
-                    if (!profile || !profile.mid) {
-                        await sendError('Failed to get profile');
-                        return;
-                    }
-                    await User.addProfile(profile).catch(() => sendError('Failed to store profile'));
-                    console.log('logged in', 'mid', profile.mid);
-
-                    // MIDがすでにあるか(チャンネルをこの後作成するためupsertしない)
-                    let accountEntry = await LineAccount.find({ where: { mid: profile.mid } }).catch(() => sendError('Failed to check data'));
-                    if (accountEntry) {
-                        console.log('Account already created');
-                        accountEntry.token = loginResult.authToken;
-                        await accountEntry.save().catch(() => sendError('Failed to save'));
-                    } else {
-                        accountEntry = await LineAccount.create({ mid: profile.mid, token: loginResult.authToken, channel: '' }).catch(() => sendError('Failed to create'));
-                        console.log('Account created');
-                    }
-
                     // E2EE鍵->DB(upsert)
                     for (const key of chain) {
                         const keyItem = {
@@ -113,48 +105,49 @@ const clients: { [mid: string]: Client } = {};
                             publicKey: key.publicKey,
                             mid: profile.mid
                         };
-                        const isCreated = await E2eeKey.upsert(keyItem, { fields: ['privateKey', 'publicKey'], returning: false }).catch(() => sendError('Failed to add key'));
+                        const isCreated = await E2eeKey.upsert(keyItem, { fields: ['privateKey', 'publicKey'], returning: false });
                         console.log(keyItem.keyId, isCreated ? 'Key added' : 'Key updated');
                     }
+                }
 
-                    // チャンネル確認+作成
-                    if (accountEntry.channel.length !== 0) {
-                        const channelInfo = await slackAppApi.groups.info(accountEntry.channel).catch(() => null);
-                        if (!channelInfo || !channelInfo.ok || channelInfo.group.is_archived) {
-                            console.log('Unknown channel', channelInfo);
+                // チャンネル確認+作成
+                if (accountEntry.channel.length !== 0) {
+                    try {
+                        const channelInfo = await slackAppApi.groups.info(accountEntry.channel);
+                        if (channelInfo.group.is_archived) {
+                            console.log('Archived channel', channelInfo);
                             accountEntry.channel = '';
                         }
+                    } catch (ex) {
+                        console.log('Failed to get exist channel, try to create new one');
+                        accountEntry.channel = '';
                     }
-                    if (accountEntry.channel.length === 0) {
-                        console.log('Creating channel');
-                        const slackChannel = await slackAppApi.groups.create(`l2s-${Math.floor(Date.now() / 1000)}`).catch(() => sendError('Failed to create channel to communicate'));
-                        if (!slackChannel) return;
-                        const inviteRes = await slackAppApi.groups.invite(slackChannel.group.id, selfUid).catch(() => sendError('Failed to invite'));
-                        if (!inviteRes) return;
-                        accountEntry.channel = slackChannel.group.id;
-                        await accountEntry.save().catch(() => sendError('Failed to save'));
-                    } else {
-                        console.log('Channel already created');
-                    }
+                }
+                if (accountEntry.channel === '') {
+                    console.log('Creating channel');
+                    const slackChannel = await slackAppApi.groups.create(`l2s-${Math.floor(Date.now() / 1000)}`);
+                    await slackAppApi.groups.invite(slackChannel.group.id, selfUid);
+                    accountEntry.channel = slackChannel.group.id;
+                    await accountEntry.save();
+                } else {
+                    console.log('Channel already created');
+                }
 
-                    // 友だちリスト取得
-                    const contactMids = await userConn.getAllContactIds().catch(() => sendError('Failed to get contact'));
-                    if (!contactMids) return;
-                    const contacts = await userConn.getContacts(contactMids).catch(() => sendError('Failed to get contact'));
-                    if (!contacts) return;
+                // 友だちリスト取得
+                const contactMids = await userConn.getAllContactIds();
+                const contacts = await userConn.getContacts(contactMids);
 
-                    // 友だちリスト格納
-                    for (const contact of contacts) {
-                        await User.addContact(profile.mid, contact).catch(() => sendError('Failed to store contacts'));
-                    }
-                    console.log('Contacts stored');
+                // 友だちリスト格納
+                for (const contact of contacts) {
+                    await User.addContact(profile.mid, contact);
+                }
+                console.log('Contacts stored');
 
-                    if (clients[profile.mid]) {
-                        await clients[profile.mid].stop();
-                    }
-                    clients[profile.mid] = new Client(accountEntry, slackRtm, slackApi);
-                    clients[profile.mid].start();
-                });
+                if (clients[profile.mid]) {
+                    await clients[profile.mid].stop();
+                }
+                clients[profile.mid] = new Client(accountEntry, slackRtm, slackApi);
+                clients[profile.mid].start();
             } else if (message.text === 'list') {
                 const accounts = await LineAccount.findAll();
 
@@ -162,11 +155,13 @@ const clients: { [mid: string]: Client } = {};
         }
     });
 
-    slackRtm.start();
     await db.authenticate();
     await db.sync();
     console.log('db: open');
-    await promisize<void>(slackRtm, 'open');
+    await new Promise(resolve => {
+        slackRtm.once('open', () => resolve());
+        slackRtm.start();
+    });
     console.log('Slack: open');
 
     const accounts = await LineAccount.findAll();
@@ -175,11 +170,3 @@ const clients: { [mid: string]: Client } = {};
         clients[account.mid].start();
     }
 })();
-
-async function sendError(msg: string, channel?: string): Promise<never> {
-    const msgInfo = await slackApi.chat.postMessage(channel || Config.slack.user, msg, { as_user: true }).catch(() => null);
-    if (!msgInfo) return Promise.reject(msg);
-    await waitPromise(5000);
-    await slackApi.chat.delete(msgInfo.ts, msgInfo.channel).catch(() => null);
-    return Promise.reject(msg);
-}
