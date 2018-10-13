@@ -49,7 +49,6 @@ export default async function (this: Client, op: Operation) {
     const sender = await this.store.contact.fetchUser(message.from_); // TODO: fromがuserじゃないときあるの？
     const thread = await fetchThreadOrCreateThread(this, message.to, sender);
     const slackOpts = {
-        as_user: true,
         thread_ts: thread.threadTs,
         icon_url: `http://obs.line-cdn.net${sender.picture}/preview`,
         username: getDisplayName(sender)
