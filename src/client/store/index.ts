@@ -10,9 +10,3 @@ export default class Store {
         this.contact = new ContactStore(client);
     }
 }
-
-export class StoreBase {
-    constructor(protected client: Client) { }
-
-    protected get selfMid() { return this.client.account.mid; }
-}

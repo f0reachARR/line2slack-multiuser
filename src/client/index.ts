@@ -38,21 +38,23 @@ export default class Client {
         for (const handler of slackHandlers)
             if (await handler.bind(this)(msg) === true) break;
     }
+    private _slackMessageHandler = this.slackMessageHandler.bind(this);
 
     private async lineMessageHandler(op: LineTypes.Operation) {
         for (const handler of lineHandlers)
             if (await handler.bind(this)(op) === true) break;
     }
+    private _lineMessageHandler = this.lineMessageHandler.bind(this);
 
     start() {
-        this.rtmClient.on('message', this.slackMessageHandler);
-        this.polling.on('receive', this.lineMessageHandler);
+        this.rtmClient.on('message', this._slackMessageHandler);
+        this.polling.on('receive', this._lineMessageHandler);
         this.polling.start();
     }
 
     async stop() {
-        this.rtmClient.off('message', this.slackMessageHandler);
-        this.polling.off('receive', this.lineMessageHandler);
+        this.rtmClient.off('message', this._slackMessageHandler);
+        this.polling.off('receive', this._lineMessageHandler);
         await this.polling.stop();
     }
 }

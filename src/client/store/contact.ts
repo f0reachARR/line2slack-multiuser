@@ -1,4 +1,4 @@
-import { StoreBase } from '.';
+import { StoreBase } from './base';
 import { User, Group } from '../../db';
 import { Op } from 'sequelize';
 import { getMidType } from '../../utils/line/user';

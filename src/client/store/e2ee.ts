@@ -1,7 +1,7 @@
 import { E2eeKey } from '../../db';
 import { E2EE_VERSION } from '../../config';
 import { decryptGroupSharedKey } from '../../e2ee';
-import { StoreBase } from '.';
+import { StoreBase } from './base';
 
 export default class E2eeStore extends StoreBase {
     async fetchKey(mid: string, keyId: number) {
