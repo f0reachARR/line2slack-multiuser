@@ -32,7 +32,7 @@ export function generateE2eeQrParam(key: Curve25519KeyPair) {
 
 function something(buf: Buffer) {
     if (buf.length % 2 !== 0) throw new Error('Invalid data');
-    const buf2 = new Buffer(buf.length / 2);
+    const buf2 = Buffer.alloc(buf.length / 2);
     for (let i = 0; i < buf.length / 2; i++) {
         buf2[i] = buf[i] ^ buf[buf2.length + i];
     }
@@ -75,7 +75,7 @@ function decryptKeychain_(key: Curve25519KeyPair, encryptedKeyChain: Buffer, pub
 }
 
 export function decryptKeychain(key: Curve25519KeyPair, encryptedKeyChain: string, publicKey: string, hashKeyChain: string) {
-    return decryptKeychain_(key, new Buffer(encryptedKeyChain, 'base64'), new Buffer(publicKey, 'base64'), new Buffer(hashKeyChain, 'base64'));
+    return decryptKeychain_(key, Buffer.from(encryptedKeyChain, 'base64'), Buffer.from(publicKey, 'base64'), Buffer.from(hashKeyChain, 'base64'));
 }
 
 export enum KeyIdType {
@@ -142,7 +142,7 @@ export function decryptMessage(msg: Types.Message, self: KeyPair, sender: KeyPai
     decryptMessageWithSecret(msg, sharedSecret);
 }
 
-export function decryptGroupSharedKey(encryptedShread: Buffer, self: KeyPair,creator: KeyPair){
+export function decryptGroupSharedKey(encryptedShread: Buffer, self: KeyPair, creator: KeyPair) {
     if (!self.privateKey) throw new Error('Invalid');
     const sharedDecKey = Buffer.from(Curve25519.sharedKey(self.privateKey, creator.publicKey).buffer);
     const aesKey = sha256(Buffer.concat([sharedDecKey, KEY_BYTES]));
@@ -168,9 +168,9 @@ export function encryptMessage(msg: Types.Message, self: KeyPair, recv: KeyPair)
     msg.contentMetadata = { 'e2eeVersion': '1' };
     msg.text = undefined;
     msg.location = undefined;
-    const selfBuf = new Buffer(4);
+    const selfBuf = Buffer.alloc(4);
     selfBuf.writeUInt32BE(self.keyId, 0);
-    const recvBuf = new Buffer(4);
+    const recvBuf = Buffer.alloc(4);
     recvBuf.writeUInt32BE(recv.keyId, 0);
     msg.chunks = [
         salt,
