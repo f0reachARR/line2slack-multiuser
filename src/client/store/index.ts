@@ -1,6 +1,6 @@
 import Client from '..';
-import E2eeStore from './e2ee';
 import ContactStore from './contact';
+import E2eeStore from './e2ee';
 
 export default class Store {
     e2ee: E2eeStore;

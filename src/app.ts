@@ -1,26 +1,23 @@
-import * as TalkService from './thrift/TalkService';
+import { RtmClient, WebClient } from '@slack/client';
+import { imageSync as createQrCode } from 'qr-image';
 import * as AuthService from './thrift/AuthService';
 import * as LineTypes from './thrift/talk_types';
-import { MemoryDataStore, RtmClient, WebClient } from '@slack/client';
-import { imageSync as createQrCode } from 'qr-image';
-import * as thrift from 'thrift';
+import * as TalkService from './thrift/TalkService';
 
+import Client from './client';
 import Config, {
     LINE_APP,
-    LINE_UNAUTH_ENDPOINT,
-    LINE_NORMAL_ENDPOINT,
     LINE_AUTH_ENDPOINT,
-    LINE_POLL_ENDPOINT,
+    LINE_NORMAL_ENDPOINT,
+    LINE_QR_POLL,
     LINE_SYSTEM_NAME,
-    LINE_QR_POLL
+    LINE_UNAUTH_ENDPOINT
 } from './config';
-import { createThrift } from './utils/thrift';
-import { uploadFile } from './utils/slack';
+import db, { E2eeKey, LineAccount, User } from './db';
 import * as e2ee from './e2ee';
-import * as request from 'request';
-import db, { LineAccount, E2eeKey, User, LineAccountInstance, UserInstance } from './db';
-import Client from './client';
 import { get } from './utils/http';
+import { uploadFile } from './utils/slack';
+import { createThrift } from './utils/thrift';
 
 const slackRtm = new RtmClient(Config.slack.token, {
     useRtmConnect: true,

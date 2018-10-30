@@ -1,6 +1,6 @@
 import * as Sequelize from 'sequelize';
-import * as LineTypes from '../thrift/talk_types';
 import conn from '.';
+import * as LineTypes from '../thrift/talk_types';
 
 interface UserAttributes {
     id?: number;

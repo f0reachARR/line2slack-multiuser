@@ -1,31 +1,30 @@
 import Client from '../../..';
 import {
-    Operation,
-    OpType,
-    ContentType,
-    MIDType,
-    Message
-} from '../../../../thrift/talk_types';
-import {
-    getKeyId,
-    KeyIdType,
-    decryptGroupMessage,
-    decryptMessage
-} from '../../../../e2ee';
-import { fetchThreadOrCreateThread } from '../../../common/thread';
-import { getDisplayName } from '../../../../utils/line/user';
-import {
-    UserInstance,
-    SlackMessageInstance
+    SlackMessageInstance,
+    UserInstance
 } from '../../../../db';
+import {
+    decryptGroupMessage,
+    decryptMessage,
+    getKeyId,
+    KeyIdType
+} from '../../../../e2ee';
+import {
+    ContentType,
+    Message,
+    MIDType,
+    Operation,
+    OpType
+} from '../../../../thrift/talk_types';
+import { getDisplayName } from '../../../../utils/line/user';
+import { fetchThreadOrCreateThread } from '../../../common/thread';
+
+import noneHandler from './none';
 
 export type MessageTransformer = (client: Client, message: Message, sender: UserInstance, thread: SlackMessageInstance) => Promise<{
     text?: string,
     attachments?: SlackMessageAttachment[];
 } | Error | void>;
-const messageTransformers: {
-    [type: number]: MessageTransformer
-} = {};
 
 export default async function (this: Client, op: Operation) {
     if (op.type !== OpType.RECEIVE_MESSAGE) return;
@@ -71,9 +70,8 @@ export default async function (this: Client, op: Operation) {
     }
 }
 
-export const registerTransformer = (type: ContentType, handler: MessageTransformer) => {
-    messageTransformers[type] = handler;
+const messageTransformers: {
+    [type: number]: MessageTransformer
+} = {
+    [ContentType.NONE]: noneHandler
 };
-
-// Import message handlers here
-import './none';

@@ -1,8 +1,8 @@
-import { StoreBase } from './base';
-import { User, Group } from '../../db';
 import { Op } from 'sequelize';
-import { getMidType } from '../../utils/line/user';
+import { Group, User } from '../../db';
 import { MIDType } from '../../thrift/talk_types';
+import { getMidType } from '../../utils/line/user';
+import { StoreBase } from './base';
 
 export default class ContactStore extends StoreBase {
     async fetchUser(mid: string) {

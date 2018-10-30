@@ -1,5 +1,7 @@
 {
     "rules": {
+        "ordered-imports": true,
+        "no-duplicate-imports": true,
         "array-type": [
             true,
             "array-simple"

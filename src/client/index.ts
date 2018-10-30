@@ -1,14 +1,14 @@
 import { RtmClient, WebClient } from '@slack/client';
 
-import { LineAccountInstance } from '../db';
 import {
     LINE_NORMAL_ENDPOINT,
     LINE_POLL_ENDPOINT,
 } from '../config';
-import { createThrift, createThriftWithConnection, ThriftWithConnection } from '../utils/thrift';
+import { LineAccountInstance } from '../db';
+import { createThrift, createThriftWithConnection } from '../utils/thrift';
 
-import * as TalkService from '../thrift/TalkService';
 import * as LineTypes from '../thrift/talk_types';
+import * as TalkService from '../thrift/TalkService';
 import { LinePollingClient } from './polling';
 import Store from './store';
 
@@ -34,27 +34,25 @@ export default class Client {
         this.store = new Store(this);
     }
 
-    private async slackMessageHandler(msg: SlackMessageEvent) {
+    private slackMessageHandler = async (msg: SlackMessageEvent) => {
         for (const handler of slackHandlers)
             if (await handler.bind(this)(msg) === true) break;
     }
-    private _slackMessageHandler = this.slackMessageHandler.bind(this);
 
-    private async lineMessageHandler(op: LineTypes.Operation) {
+    private lineMessageHandler = async (op: LineTypes.Operation) => {
         for (const handler of lineHandlers)
             if (await handler.bind(this)(op) === true) break;
     }
-    private _lineMessageHandler = this.lineMessageHandler.bind(this);
 
     start() {
-        this.rtmClient.on('message', this._slackMessageHandler);
-        this.polling.on('receive', this._lineMessageHandler);
+        this.rtmClient.on('message', this.slackMessageHandler);
+        this.polling.on('receive', this.lineMessageHandler);
         this.polling.start();
     }
 
     async stop() {
-        this.rtmClient.off('message', this._slackMessageHandler);
-        this.polling.off('receive', this._lineMessageHandler);
+        this.rtmClient.off('message', this.slackMessageHandler);
+        this.polling.off('receive', this.lineMessageHandler);
         await this.polling.stop();
     }
 }

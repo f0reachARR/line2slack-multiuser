@@ -1,7 +1,7 @@
 import Client from '..';
 import { SlackMessage, UserInstance } from '../../db';
-import { getMidType, getDisplayName } from '../../utils/line/user';
 import * as LineTypes from '../../thrift/talk_types';
+import { getDisplayName, getMidType } from '../../utils/line/user';
 
 export const fetchThreadOrCreateThread = async (client: Client, toMid: string, user: UserInstance) => {
     let slackThreadInfo = await SlackMessage.findOne({ where: { channel: client.account.channel, mid: toMid } });
@@ -9,7 +9,7 @@ export const fetchThreadOrCreateThread = async (client: Client, toMid: string, u
     let title, picturePath;
     switch (getMidType(toMid)) {
         case LineTypes.MIDType.USER:
-            title = getDisplayName(user);
+            title = getDisplayName(user, true);
             picturePath = user.picture;
             break;
         case LineTypes.MIDType.GROUP:

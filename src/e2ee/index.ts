@@ -1,8 +1,7 @@
 import * as crypto from 'crypto';
 import * as Thrift from 'thrift';
-import * as Curve25519 from './curve25519';
 import * as Types from '../thrift/talk_types';
-import { E2eeKeyInstance } from '../db';
+import * as Curve25519 from './curve25519';
 
 const KEY_BYTES = Buffer.from('Key', 'utf8');
 const IV_BYTES = Buffer.from('IV', 'utf8');

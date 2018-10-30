@@ -1,10 +1,9 @@
+import { MessageTransformer } from '.';
 import Client from '../../..';
+import { SlackMessageInstance, UserInstance } from '../../../../db';
 import {
-    ContentType,
     Message
 } from '../../../../thrift/talk_types';
-import { UserInstance, SlackMessageInstance } from '../../../../db';
-import { registerTransformer, MessageTransformer } from '.';
 
 const handler: MessageTransformer = async (_client: Client, message: Message, _sender: UserInstance, _thread: SlackMessageInstance) => {
     if (!message.text) return new Error('Message is empty');
@@ -16,4 +15,4 @@ const handler: MessageTransformer = async (_client: Client, message: Message, _s
     };
 };
 
-registerTransformer(ContentType.NONE, handler);
+export default handler;

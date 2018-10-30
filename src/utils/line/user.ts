@@ -1,5 +1,5 @@
-import { MIDType } from '../../thrift/talk_types';
 import { UserInstance } from '../../db';
+import { MIDType } from '../../thrift/talk_types';
 
 export const getMidType = (mid: string) => {
     switch (mid.substr(0, 1)) {

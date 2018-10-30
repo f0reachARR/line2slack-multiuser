@@ -1,7 +1,5 @@
-import { safeLoad } from 'js-yaml';
-import { readFileSync } from 'fs';
-import * as joi from 'joi';
 import * as dotenv from 'dotenv';
+import * as joi from 'joi';
 
 export const LINE_APP = 'CHROMEOS\t1.4.17\tChrome_OS\t1';
 export const LINE_UNAUTH_ENDPOINT = 'https://ga2.line.naver.jp/api/v4/TalkService.do';

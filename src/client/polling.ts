@@ -1,7 +1,7 @@
 import { EventEmitter } from 'events';
 
-import * as TalkService from '../thrift/TalkService';
 import * as LineTypes from '../thrift/talk_types';
+import * as TalkService from '../thrift/TalkService';
 import { ThriftWithConnection } from '../utils/thrift';
 
 export class LinePollingClient extends EventEmitter {

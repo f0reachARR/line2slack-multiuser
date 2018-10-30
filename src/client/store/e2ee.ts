@@ -1,5 +1,5 @@
-import { E2eeKey } from '../../db';
 import { E2EE_VERSION } from '../../config';
+import { E2eeKey } from '../../db';
 import { decryptGroupSharedKey } from '../../e2ee';
 import { StoreBase } from './base';
 
