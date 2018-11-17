@@ -8,6 +8,7 @@ export class LinePollingClient extends EventEmitter {
     private cancelPromise: Promise<null>;
     private cancelFunction: null | (() => void);
     private pollingPromise: Promise<void>;
+    private lastOpNum = 0;
 
     on(event: 'receive', listener: (op: LineTypes.Operation) => void): this;
     on(event: 'error', listener: (err: LineTypes.TalkException) => void): this;
@@ -25,7 +26,6 @@ export class LinePollingClient extends EventEmitter {
     }
 
     private async update() {
-        let lastOpNum = await this.lineClient.getLastOpRevision();
         this.cancelFunction = () => null;
         this.cancelPromise = new Promise(resolve => this.cancelFunction = () => resolve());
 
@@ -34,14 +34,14 @@ export class LinePollingClient extends EventEmitter {
             const errorPromise = new Promise<null>(resolve => {
                 this.pollingClient.conn.once('error', () => resolve());
             });
-            const longPollProm = this.pollingClient.client.fetchOperations(lastOpNum, 1);
+            const longPollProm = this.pollingClient.client.fetchOperations(this.lastOpNum, 1);
             try {
                 const result = await Promise.race([errorPromise, longPollProm, this.cancelPromise]);
                 if (result) {
                     for (const item of result) {
                         this.emit('receive', item);
-                        if (item.revision > lastOpNum)
-                            lastOpNum = item.revision;
+                        if (item.revision > this.lastOpNum)
+                            this.lastOpNum = item.revision;
                     }
                 }
             } catch (ex) {
@@ -52,7 +52,8 @@ export class LinePollingClient extends EventEmitter {
         }
     }
 
-    start() {
+    async start() {
+        this.lastOpNum = await this.lineClient.getLastOpRevision();
         this.pollingPromise = this.update();
     }
 

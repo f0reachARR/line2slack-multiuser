@@ -65,7 +65,7 @@ const clients: { [mid: string]: Client } = {};
                 // ログイン
                 const loginConn = createThrift(LINE_AUTH_ENDPOINT, AuthService);
                 const loginReq = new LineTypes.LoginRequest({
-                    keepLoggedIn: false,
+                    keepLoggedIn: true,
                     verifier: body.result.verifier,
                     systemName: LINE_SYSTEM_NAME,
                     identityProvider: LineTypes.IdentityProvider.LINE,
@@ -144,7 +144,7 @@ const clients: { [mid: string]: Client } = {};
                     await clients[profile.mid].stop();
                 }
                 clients[profile.mid] = new Client(accountEntry, slackRtm, slackApi);
-                clients[profile.mid].start();
+                await clients[profile.mid].start();
             } else if (message.text === 'list') {
                 const accounts = await LineAccount.findAll();
 
@@ -164,6 +164,6 @@ const clients: { [mid: string]: Client } = {};
     const accounts = await LineAccount.findAll();
     for (const account of accounts) {
         clients[account.mid] = new Client(account, slackRtm, slackApi);
-        clients[account.mid].start();
+        await clients[account.mid].start();
     }
 })();

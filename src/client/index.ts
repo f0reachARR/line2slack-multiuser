@@ -44,10 +44,10 @@ export default class Client {
             if (await handler.bind(this)(op) === true) break;
     }
 
-    start() {
+    async start() {
         this.rtmClient.on('message', this.slackMessageHandler);
         this.polling.on('receive', this.lineMessageHandler);
-        this.polling.start();
+        await this.polling.start();
     }
 
     async stop() {
