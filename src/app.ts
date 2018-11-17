@@ -16,6 +16,7 @@ import Config, {
 import db, { E2eeKey, LineAccount, User } from './db';
 import * as e2ee from './e2ee';
 import { get } from './utils/http';
+import { app } from './utils/logger';
 import { uploadFile } from './utils/slack';
 import { createThrift } from './utils/thrift';
 
@@ -35,7 +36,7 @@ const clients: { [mid: string]: Client } = {};
         if (message.user !== Config.slack.user) return;
         if (message.channel.startsWith('D')) { // is DM?
             if (message.text === 'login') {
-                console.log('Login session started');
+                app.info('Login session started');
                 const qrConn = createThrift(LINE_UNAUTH_ENDPOINT, TalkService);
                 const keyForEx = e2ee.generateKeyPair();
                 const qrLoginInfo = await qrConn.getAuthQrcode(true, LINE_SYSTEM_NAME, true);
@@ -78,17 +79,17 @@ const clients: { [mid: string]: Client } = {};
                 const userConn = createThrift(LINE_NORMAL_ENDPOINT, TalkService, { headers: { 'X-Line-Access': loginResult.authToken } });
                 const profile = await userConn.getProfile();
                 await User.addProfile(profile);
-                console.log('logged in', 'mid', profile.mid);
+                app.info('logged in', 'mid', profile.mid);
 
                 // MIDがすでにあるか(チャンネルをこの後作成するためupsertしない)
                 let accountEntry = await LineAccount.find({ where: { mid: profile.mid } });
                 if (accountEntry) {
-                    console.log('Account already created');
+                    app.log('Account already created');
                     accountEntry.token = loginResult.authToken;
                     await accountEntry.save();
                 } else {
                     accountEntry = await LineAccount.create({ mid: profile.mid, token: loginResult.authToken, channel: '' });
-                    console.log('Account created');
+                    app.log('Account created');
                 }
 
                 if (body.result.metadata) {
@@ -103,7 +104,7 @@ const clients: { [mid: string]: Client } = {};
                             mid: profile.mid
                         };
                         const isCreated = await E2eeKey.upsert(keyItem, { fields: ['privateKey', 'publicKey'], returning: false });
-                        console.log(keyItem.keyId, isCreated ? 'Key added' : 'Key updated');
+                        app.log(keyItem.keyId, isCreated ? 'Key added' : 'Key updated');
                     }
                 }
 
@@ -112,22 +113,22 @@ const clients: { [mid: string]: Client } = {};
                     try {
                         const channelInfo = await slackAppApi.groups.info(accountEntry.channel);
                         if (channelInfo.group.is_archived) {
-                            console.log('Archived channel', channelInfo);
+                            app.log('Archived channel', channelInfo);
                             accountEntry.channel = '';
                         }
                     } catch (ex) {
-                        console.log('Failed to get exist channel, try to create new one');
+                        app.error('Failed to get exist channel, try to create new one');
                         accountEntry.channel = '';
                     }
                 }
                 if (accountEntry.channel === '') {
-                    console.log('Creating channel');
+                    app.log('Creating channel');
                     const slackChannel = await slackAppApi.groups.create(`l2s-${Math.floor(Date.now() / 1000)}`);
                     await slackAppApi.groups.invite(slackChannel.group.id, selfUid);
                     accountEntry.channel = slackChannel.group.id;
                     await accountEntry.save();
                 } else {
-                    console.log('Channel already created');
+                    app.log('Channel already created');
                 }
 
                 // 友だちリスト取得
@@ -138,7 +139,7 @@ const clients: { [mid: string]: Client } = {};
                 for (const contact of contacts) {
                     await User.addContact(profile.mid, contact);
                 }
-                console.log('Contacts stored');
+                app.log('Contacts stored');
 
                 if (clients[profile.mid]) {
                     await clients[profile.mid].stop();
@@ -154,12 +155,12 @@ const clients: { [mid: string]: Client } = {};
 
     await db.authenticate();
     await db.sync();
-    console.log('db: open');
+    app.log('db: open');
     await new Promise(resolve => {
         slackRtm.once('open', () => resolve());
         slackRtm.start();
     });
-    console.log('Slack: open');
+    app.log('Slack: open');
 
     const accounts = await LineAccount.findAll();
     for (const account of accounts) {

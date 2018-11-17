@@ -76,6 +76,7 @@
             "allow-declarations",
             "allow-named-functions"
         ],
+        "no-console": true,
         "prefer-const": true,
         "radix": true,
         "semicolon": [

@@ -1,5 +1,6 @@
 import * as dotenv from 'dotenv';
 import * as joi from 'joi';
+import { app } from './utils/logger';
 
 export const LINE_APP = 'CHROMEOS\t1.4.17\tChrome_OS\t1';
 export const LINE_UNAUTH_ENDPOINT = 'https://ga2.line.naver.jp/api/v4/TalkService.do';
@@ -30,7 +31,7 @@ const configScheme = joi.object().keys({
 
 const { error: validateError } = configScheme.validate(process.env);
 if (validateError) {
-    console.error(validateError);
+    app.error(validateError);
     process.exit(-1);
 }
 
