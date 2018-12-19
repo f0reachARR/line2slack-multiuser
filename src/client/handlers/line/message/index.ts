@@ -20,6 +20,7 @@ import { getDisplayName } from '../../../../utils/line/user';
 import { fetchThreadOrCreateThread } from '../../../common/thread';
 
 import noneHandler from './none';
+import stickerHandler from './sticker';
 
 export type MessageTransformer = (client: Client, message: Message, sender: UserInstance, thread: SlackMessageInstance) => Promise<{
     text?: string,
@@ -73,5 +74,6 @@ export default async function (this: Client, op: Operation) {
 const messageTransformers: {
     [type: number]: MessageTransformer
 } = {
-    [ContentType.NONE]: noneHandler
+    [ContentType.NONE]: noneHandler,
+    [ContentType.STICKER]: stickerHandler,
 };
