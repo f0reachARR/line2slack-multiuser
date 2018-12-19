@@ -4,7 +4,7 @@ import {
     LINE_NORMAL_ENDPOINT,
     LINE_POLL_ENDPOINT,
 } from '../config';
-import { LineAccountInstance } from '../db';
+import { LineAccountInstance, User } from '../db';
 import { createThrift, createThriftWithConnection } from '../utils/thrift';
 
 import * as LineTypes from '../thrift/talk_types';
@@ -12,6 +12,7 @@ import * as TalkService from '../thrift/TalkService';
 import { LinePollingClient } from './polling';
 import Store from './store';
 
+import { app } from '../utils/logger';
 import { handlers as lineHandlers } from './handlers/line';
 import { handlers as slackHandlers } from './handlers/slack';
 
@@ -44,7 +45,31 @@ export default class Client {
             if (await handler.bind(this)(op) === true) break;
     }
 
+    async checkAccount() {
+        try {
+            const channelInfo = await this.webClient.groups.info(this.account.channel);
+            if (channelInfo.group.is_archived) throw new Error('Channel was archived');
+
+            const profile = await this.lineClient.getProfile();
+            await User.addProfile(profile);
+        } catch (e) {
+            app.error(e);
+            return false;
+        }
+        return true;
+    }
+
+    async notifyError(message: string) {
+        await this.webClient.chat.postMessage(this.account.channel, message);
+        app.error(message);
+    }
+
     async start() {
+        if (!await this.checkAccount()) { // TODO
+            await this.notifyError('account unavailable');
+            return;
+        }
+
         this.rtmClient.on('message', this.slackMessageHandler);
         this.polling.on('receive', this.lineMessageHandler);
         await this.polling.start();
