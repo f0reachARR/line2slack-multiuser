@@ -1,4 +1,4 @@
-import Client from '../../..';
+import Client, { LineEventArgs } from '../../..';
 import {
     SlackMessageInstance,
     UserInstance
@@ -13,7 +13,6 @@ import {
     ContentType,
     Message,
     MIDType,
-    Operation,
     OpType
 } from '../../../../thrift/talk_types';
 import { getDisplayName } from '../../../../utils/line/user';
@@ -27,7 +26,7 @@ export type MessageTransformer = (client: Client, message: Message, sender: User
     attachments?: SlackMessageAttachment[];
 } | Error | void>;
 
-export default async function (this: Client, op: Operation) {
+export default async function ({ client, op }: LineEventArgs) {
     if (op.type !== OpType.RECEIVE_MESSAGE) return;
     const { message } = op;
     if (message.contentType === ContentType.NONE || message.contentType === ContentType.LOCATION) {
@@ -36,38 +35,38 @@ export default async function (this: Client, op: Operation) {
         if (receiverKeyId < 0 || senderKeyId < 0) // そもそも暗号化されていない
             return;
 
-        const senderKeyEntry = await this.store.e2ee.fetchKey(message.from_, senderKeyId);
+        const senderKeyEntry = await client.store.e2ee.fetchKey(message.from_, senderKeyId);
 
         if (message.toType === MIDType.GROUP) {
-            const groupSharedKey = await this.store.e2ee.fetchGroupSharedKey(message.to, receiverKeyId);
+            const groupSharedKey = await client.store.e2ee.fetchGroupSharedKey(message.to, receiverKeyId);
             decryptGroupMessage(message, groupSharedKey, senderKeyEntry);
         } else if (message.toType === MIDType.USER) {
-            const receiverKeyEntry = await this.store.e2ee.fetchSelfKey(receiverKeyId);
+            const receiverKeyEntry = await client.store.e2ee.fetchSelfKey(receiverKeyId);
             decryptMessage(message, receiverKeyEntry, senderKeyEntry);
         }
     }
-    const sender = await this.store.contact.fetchUser(message.from_); // TODO: fromがuserじゃないときあるの？
-    const thread = await fetchThreadOrCreateThread(this, message.to, sender);
+    const sender = await client.store.contact.fetchUser(message.from_); // TODO: fromがuserじゃないときあるの？
+    const thread = await fetchThreadOrCreateThread(client, message.to, sender);
     const slackOpts = {
         thread_ts: thread.threadTs,
         icon_url: `http://obs.line-cdn.net${sender.picture}/preview`,
         username: getDisplayName(sender)
     };
     if (messageTransformers[message.contentType]) {
-        const transformed = await messageTransformers[message.contentType](this, message, sender, thread);
+        const transformed = await messageTransformers[message.contentType](client, message, sender, thread);
         if (!transformed) return; // 画像など
         if (transformed instanceof Error) {
             // 例外
-            await this.webClient.chat.postMessage(this.account.channel, `Failed to process message\n${transformed.message}`, slackOpts);
+            await client.webClient.chat.postMessage(client.account.channel, `Failed to process message\n${transformed.message}`, slackOpts);
         } else {
-            await this.webClient.chat.postMessage(this.account.channel, transformed.text || '', {
+            await client.webClient.chat.postMessage(client.account.channel, transformed.text || '', {
                 ...transformed,
                 ...slackOpts
             });
         }
         return true;
     } else {
-        await this.webClient.chat.postMessage(this.account.channel, 'Unknown message type', slackOpts);
+        await client.webClient.chat.postMessage(client.account.channel, 'Unknown message type', slackOpts);
     }
 }
 

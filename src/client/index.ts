@@ -16,8 +16,11 @@ import { app } from '../utils/logger';
 import { handlers as lineHandlers } from './handlers/line';
 import { handlers as slackHandlers } from './handlers/slack';
 
-export type LineHandler = (this: Client, op: LineTypes.Operation) => Promise<boolean | void>;
-export type SlackHandler = (this: Client, msg: SlackMessageEvent) => Promise<boolean | void>;
+export type LineEventArgs = { client: Client, op: LineTypes.Operation };
+export type SlackMessageEventArgs = { client: Client, msg: SlackMessageEvent };
+
+export type LineHandler = (e: LineEventArgs) => Promise<boolean | void>;
+export type SlackMessageHandler = (e: SlackMessageEventArgs) => Promise<boolean | void>;
 
 export default class Client {
     lineClient: TalkService.Client;
@@ -37,12 +40,12 @@ export default class Client {
 
     private slackMessageHandler = async (msg: SlackMessageEvent) => {
         for (const handler of slackHandlers)
-            if (await handler.bind(this)(msg) === true) break;
+            if (await handler({ client: this, msg }) === true) break;
     }
 
     private lineMessageHandler = async (op: LineTypes.Operation) => {
         for (const handler of lineHandlers)
-            if (await handler.bind(this)(op) === true) break;
+            if (await handler({ client: this, op }) === true) break;
     }
 
     async checkAccount() {

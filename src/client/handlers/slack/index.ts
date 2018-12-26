@@ -1,4 +1,4 @@
-import { SlackHandler } from '../..';
+import { SlackMessageHandler } from '../..';
 
-export const handlers: SlackHandler[] = [
+export const handlers: SlackMessageHandler[] = [
 ];
